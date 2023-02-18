@@ -1,11 +1,11 @@
-// Ogni tanto bisogna aggiornare le impostazioni della mail dalla quale mando le mail
-// Failed to fetch user profile, oppure, failed to obtain access token li ottengo perchè google
-// non accetta i localhost
+// !Ogni tanto bisogna aggiornare le impostazioni della mail dalla quale mando le mail
+// !Failed to fetch user profile, oppure, failed to obtain access token li ottengo perchè google
+// !non accetta i localhost
 
 /*
-  registro_docente/:classe/media/:studente/:materia -> voti di uno studente in una materia
-  registro_docente/:classe/media/:studente          -> voti di uno studente
-  registro_docente/:classe/media/:materia           -> voti materia
+  *registro_docente/:classe/media/:studente/:materia -> voti di uno studente in una materia
+  *registro_docente/:classe/media/:studente          -> voti di uno studente
+  *registro_docente/:classe/media/:materia           -> voti materia
 */
 
 const express = require("express");
