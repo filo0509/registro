@@ -1,0 +1,93 @@
+<div
+      class="modal fade"
+      id="aggiungiVotoForm"
+      tabindex="-1"
+      role="dialog"
+      aria-hidden="true"
+    >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-close">
+                <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                ></button>
+            </div>
+            <!-- End Header -->
+
+            <!-- Body -->
+            <div class="modal-body">
+                <!-- Sign up -->
+                <div>
+                    <!-- Heading -->
+                    <div class="text-center mb-7">
+                        <h2>Aggiungi voti</h2>
+                        <p>
+                            Classe <%-classe.name%>
+                        </p>
+                    </div>
+                    <!-- End Heading -->
+
+                    <!-- Ho dei problemi con il submitting -->
+                    <form class="" method="post" action="/registro_docente/<%=classe.id%>/medie/">
+                        <!-- Form -->
+                        <div class="mb-3">
+                            <label class="form-label">Studente</label>
+                            <select name="selectstudente" class="form-control">
+                                <option value="" disabled selected>- Seleziona uno studente -</option>
+                                <% students.forEach(studente => { %>
+                                    <option id="studente" value="<%=studente.id%>"> <%=studente.name%> </option>
+                                <% }); %>
+                            </select>
+                            <span class="invalid-feedback">Inserisci il nome dello studente</span>
+                        </div>
+                        <!-- End Form -->
+
+                        <!-- Form -->
+                        <div class="mb-3">
+                            <label class="form-label">Materia</label>
+                            <select name="selectmateria" class="form-control">
+                                <option value="" disabled selected>- Seleziona una materia -</option>
+                                <% classe.subjects.forEach(materia => { %>
+                                    <option id="materia" value="<%=materia.name%>"> <%=materia.name%> </option>
+                                <% }); %>
+                            </select>
+                            <span class="invalid-feedback">Inserisci il nome della materia</span>
+                        </div>
+                        <!-- End Form -->
+
+                        <!-- Form -->
+                        <div class="mb-3">
+                            <label class="form-label">Voto</label>
+                            <select name="selectvoto" class="form-control"> <!-- 0 è NC-->
+                                <option value="" disabled selected>- Seleziona uno voto -</option>
+                                <option value="0"> NC </option>
+                                <% for(var i = 2; i <= 10; i++) { %>
+                                    <option id="voto" value="<%=i%>"> <%=i%> </option>
+                                <% } %>
+                            </select>
+                            <span class="invalid-feedback">Inserisci il voto</span>
+                        </div>
+                        <!-- End Form -->
+                            
+                        <div class="mb-3">
+                            <label class="form-label">Data</label>
+                            <input name="selectdata" class="form-control" type="date"></input>
+                            <span class="invalid-feedback">Inserisci il voto</span>
+                        </div>
+
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn-primary form-control-lg">
+                                Conferma
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <!-- End Sign up -->
+            </div>
+        </div>
+    </div>
+</div>

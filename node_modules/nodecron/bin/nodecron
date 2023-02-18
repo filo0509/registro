@@ -1,0 +1,104 @@
+#!/usr/bin/env node
+
+var spawn = require('child_process').spawn;
+
+if (process.argv.length < 4) {
+	console.error('Usage: nodecron schedule command');
+	console.error();
+	console.error('Arguments:');
+	console.error('  schedule: schedule in Later\'s text format');
+	console.error('            (http://bunkat.github.io/later/parsers.html#text)');
+	console.error('  command:  command to execute with optional arguments');
+	console.error();
+	console.error('Examples:');
+	console.error('  nodecron "every 5 mins" date           # print the date every 5 minutes')
+	console.error('  nodecron "at 10:15 am" node cleanup.js # run cleanup.js every day at 10:15')
+	process.exit(1);
+}
+
+var later = require("later");
+var sched = later.parse.text(process.argv[2]);
+var cron = later.schedule(sched);
+
+var bunyan = require('bunyan');
+var log = bunyan.createLogger({name: 'cron'});
+
+if (sched.error >= 0) {
+	if (process.stdout.isTTY) {
+		console.error('Schedule expression error:');
+		console.error(process.argv[2]);
+		console.error(Array(sched.error).join(' ') + "^-----------");
+	} else {
+		log.error({expression: process.argv[2], position: sched.error}, 'schedule expression error');
+	}
+	process.exit(1);
+}
+
+var proc;
+var interrupted;
+var timeout;
+
+var signals = {
+	SIGINT: 2,
+	SIGTERM: 15
+};
+
+function run() {
+	if (interrupted) {
+		return;
+	}
+
+	log.info('running command')
+	proc = spawn(process.argv[3], process.argv.slice(4), {stdio: 'inherit'});
+	proc.on('exit', function(code, signal) {
+		proc = undefined;
+
+		if (signal) {
+			log.error({code: code, signal: signal}, 'process exited with code ' + code + ' and signal ' + signal);
+			process.exit(127 + signals[signal]);
+		}
+
+		if (code !== 0) {
+			log.error({code: code, signal: signal}, 'process exited with code ' + code + ' and signal ' + signal);
+			process.exit(code);
+		}
+
+		log.info('command finished successfully');
+		schedule();
+	});
+}
+
+function schedule() {
+	var now = Date.now();
+	var next = cron.next(2, now);
+
+	if (!next[0]) { throw new Error('cannot schedule'); }
+
+	var diff = next[0].getTime() - now;
+	if(diff < 1000) {
+		// minimum time to fire is one second, use next occurrence instead
+		diff = next[1] ? next[1].getTime() - now : 1000;
+	}
+	if (diff > 2147483647) {
+		diff = 2147483647;
+	}
+	var time = new Date(now + diff)
+
+	log.info({next: time}, 'running next: ' + time);
+	timeout = setTimeout(run, diff);
+}
+
+
+Object.keys(signals).forEach(function(signal) {
+	process.on(signal, function() {
+		interrupted = true;
+		if (proc) {
+			proc.kill(signal);
+		}
+		if (timeout) {
+			clearTimeout(timeout);
+		}
+	});
+});
+
+schedule();

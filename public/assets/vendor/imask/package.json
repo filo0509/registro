@@ -1,0 +1,67 @@
+{
+  "_args": [
+    [
+      "imask@6.2.2",
+      "/Users/jahaganiev/Documents/work/hs/themes/front-template"
+    ]
+  ],
+  "_from": "imask@6.2.2",
+  "_id": "imask@6.2.2",
+  "_inBundle": false,
+  "_integrity": "sha512-oREITqngsjD0YxO62UpVQSxLNjIcb/mNO9hX2F8xQ282Kj3X9KXEAobipbUXz5R5NgtiL6nOPrWwo+AnLuz5AQ==",
+  "_location": "/imask",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "imask@6.2.2",
+    "name": "imask",
+    "escapedName": "imask",
+    "rawSpec": "6.2.2",
+    "saveSpec": null,
+    "fetchSpec": "6.2.2"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/imask/-/imask-6.2.2.tgz",
+  "_spec": "6.2.2",
+  "_where": "/Users/jahaganiev/Documents/work/hs/themes/front-template",
+  "author": {
+    "name": "Alexey Kryazhev"
+  },
+  "bugs": {
+    "url": "https://github.com/uNmAnNeR/imaskjs/issues"
+  },
+  "description": "vanilla javascript input mask",
+  "engines": {
+    "npm": ">=4.0.0"
+  },
+  "gitHead": "228f2a4dce7125d0c7156868fcb5364b4487c8e6",
+  "homepage": "https://imask.js.org/",
+  "keywords": [
+    "javascript",
+    "jquery",
+    "input",
+    "mask"
+  ],
+  "license": "MIT",
+  "main": "dist/imask.js",
+  "module": "esm/index.js",
+  "name": "imask",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uNmAnNeR/imaskjs.git"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "coveralls": "nyc report --reporter=text-lcov | coveralls",
+    "flow": "flow",
+    "lint": "eslint src/",
+    "pretest": "flow check",
+    "test": "cross-env NODE_ENV=test nyc mocha --exit --recursive",
+    "watch": "rollup -c -w"
+  },
+  "types": "index.d.ts",
+  "version": "6.2.2"
+}

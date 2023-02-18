@@ -1,0 +1,85 @@
+<!--Display Grid-->
+<% var dateObj = new Date(); %>
+<% var month = dateObj.getUTCMonth() + 1; %>
+<% var day = dateObj.getUTCDate(); %>
+<% var dayString = (day < 10 ? '0' : '') + day.toString(); %>
+<% var monthString = (month < 10 ? '0' : '') + month.toString(); %>
+
+
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3em;">
+    <!-- Card Calendario -->
+    <div class="card mb-3" style="max-width: 500px;">
+      <div class="row no-gutters">
+        <div class="col-md-4" style="margin: auto; text-align: center;">
+          <h1 style="font-family: Helvetica, Arial, sans-serif; font-size: 52px;"><span class="text-primary text-highlight"><%= dayString %><br><%= monthString %></span></h1>
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h3 class="card-title">Calendario</h3>
+            <p class="card-text">Voti e lezioni, tutto in unico posto</p>
+            <a class="card-link" href="/calendario">Vai -></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Card Calendario -->
+
+    <!-- Card Registro -->
+    <div class="card mb-3" style="max-width: 500px;">
+      <div class="row no-gutters">
+        <div class="col-md-4" style="margin: auto; text-align: center;">
+          <span class="text-primary text-highlight" style="font-size: 100px;">
+            <i class="bi bi-activity"></i>
+          </span>
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h3 class="card-title">Registro</h3>
+            <p class="card-text">Controlla i voti</p>
+            <a class="card-link" href="<%= linkRegistro %>">Vai -></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Card Registro -->
+
+    <!-- Card Lezioni -->
+    <div class="card mb-3" style="max-width: 500px;">
+      <div class="row no-gutters">
+        <div class="col-md-4" style="margin: auto; text-align: center;">
+          <span class="text-primary text-highlight" style="font-size: 85px;">
+            <i class="bi bi-bar-chart-steps"></i>
+          </span>
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h3 class="card-title">Lezioni</h3>
+            <p class="card-text">...</p>
+            <a class="card-link" href="/lezioni">Vai -></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Card Lezioni -->
+
+    <!-- Card Colloqui -->
+    <div class="card mb-3" style="max-width: 500px;">
+    <div class="row no-gutters">
+        <div class="col-md-4" style="margin: auto; text-align: center;">
+        <span class="text-primary text-highlight" style="font-size: 88px;">
+            <i class="bi bi-calendar2-event"></i>
+        </span>
+        </div>
+        <div class="col-md-8">
+        <div class="card-body">
+            <h3 class="card-title">Colloqui</h3>
+            <p class="card-text">...</p>
+            <a class="card-link" href="#">Vai -></a>
+        </div>
+        </div>
+    </div>
+    </div>
+    <!-- End Card Colloqui -->
+  </div>
+  <!-- End Display Grid -->

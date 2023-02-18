@@ -1,0 +1,31 @@
+{
+  "name": "nodecron",
+  "version": "0.2.0",
+  "description": "Scheduled process runner",
+  "bin": {
+    "nodecron": "./bin/nodecron"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/egergo/nodecron.git"
+  },
+  "engines": [
+    "node >=0.10.0"
+  ],
+  "keywords": [
+    "cron",
+    "nodecron",
+    "schedule",
+    "timer",
+    "scheduling"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gergő Ertli <egergo@gmail.com> (http://github.com/egergo)",
+  "license": "MIT",
+  "dependencies": {
+    "bunyan": "^1.5.1",
+    "later": "^1.2.0"
+  }
+}

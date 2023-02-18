@@ -1,0 +1,59 @@
+{
+  "_args": [
+    [
+      "wnumb@1.2.0",
+      "/Users/jahaganiev/Documents/work/hs/themes/front-template"
+    ]
+  ],
+  "_from": "wnumb@1.2.0",
+  "_id": "wnumb@1.2.0",
+  "_inBundle": false,
+  "_integrity": "sha512-eYut5K/dW7usfk/Mwm6nxBNoTPp/uP7PlXld+hhg7lDtHLdHFnNclywGYM9BRC7Ohd4JhwuHg+vmOUGfd3NhVA==",
+  "_location": "/wnumb",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "wnumb@1.2.0",
+    "name": "wnumb",
+    "escapedName": "wnumb",
+    "rawSpec": "1.2.0",
+    "saveSpec": null,
+    "fetchSpec": "1.2.0"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/wnumb/-/wnumb-1.2.0.tgz",
+  "_spec": "1.2.0",
+  "_where": "/Users/jahaganiev/Documents/work/hs/themes/front-template",
+  "author": {
+    "name": "leongersen"
+  },
+  "bugs": {
+    "url": "https://github.com/leongersen/wnumb/issues"
+  },
+  "description": "wNumb - JavaScript Number & Money formatting",
+  "devDependencies": {
+    "prettier": "^1.18.2",
+    "uglify-js": "^3.6.5"
+  },
+  "files": [
+    "wNumb.js",
+    "wNumb.min.js"
+  ],
+  "homepage": "https://github.com/leongersen/wnumb#readme",
+  "license": "MIT",
+  "main": "wNumb.js",
+  "name": "wnumb",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/leongersen/wnumb.git"
+  },
+  "scripts": {
+    "build": "npm run format && npm run minify",
+    "format": "prettier wNumb.js --write --print-width=120",
+    "minify": "uglifyjs wNumb.js --compress --mangle --output wNumb.min.js"
+  },
+  "version": "1.2.0"
+}

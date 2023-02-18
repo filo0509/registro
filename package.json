@@ -1,0 +1,39 @@
+{
+  "name": "registro_nodejs",
+  "version": "1.0.0",
+  "description": "A little website that handles the grades of the students",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app"
+  },
+  "author": "Filippo Donati",
+  "license": "ISC",
+  "dependencies": {
+    "@admin-bro/express": "^3.1.0",
+    "@admin-bro/mongoose": "^1.0.2",
+    "@adminjs/express": "^5.0.0",
+    "@adminjs/mongoose": "^3.0.0",
+    "admin-bro": "^3.2.5",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.0",
+    "chartjs-adapter-moment": "^1.0.0",
+    "cookie-parser": "^1.4.6",
+    "ejs": "^3.1.8",
+    "express": "^4.18.1",
+    "express-formidable": "^1.2.0",
+    "express-session": "^1.17.3",
+    "googleapis": "^105.0.0",
+    "moment": "^2.29.4",
+    "mongoose": "^6.4.6",
+    "mongoose-findorcreate": "^3.0.0",
+    "node-cron": "^3.0.2",
+    "nodecron": "^0.2.0",
+    "nodemailer": "^6.7.7",
+    "nodemon": "^2.0.19",
+    "passport": "^0.6.0",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-local-mongoose": "^7.1.2",
+    "tslib": "^2.4.0"
+  }
+}

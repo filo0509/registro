@@ -1,0 +1,74 @@
+---
+title: Customizing HTML
+nav_title: Custom HTML
+tags: demo
+---
+
+<p class="lead">
+	Nearly every piece of Tom Select is customizable.
+	<a href="/docs/#render-templates">Render templates</a> allow you to customize the HTML of rendered options, items, dropdown menu, optgroups and more.
+</p>
+
+{% from "demo.njk" import demo %}
+
+{% set label %}
+<label class="h2 mb-3">
+	Custom Option and Item templates
+</label>
+<p>
+	This example provides a simple demonstration of how to override the default templates for options and items along with proper use of the <kbd>escape()</kbd> method.
+</p>
+{% endset %}
+
+{% set html %}
+<select id="select-links" multiple placeholder="Pick some links..."></select>
+{% endset %}
+
+<style type="text/css">
+{% set style %}
+.ts-control .option .title {
+	display: block;
+}
+.ts-control .option .url {
+	font-size: 12px;
+	display: block;
+	color: #a0a0a0;
+}
+.ts-control .item a {
+	color: #006ef5;
+}
+.ts-control .item.active a {
+	color: #303030;
+}
+{% endset %}
+</style>
+
+
+<script>
+{% set script %}
+
+new TomSelect('#select-links',{
+	valueField: 'id',
+	searchField: 'title',
+	options: [
+		{id: 1, title: 'DIY', url: 'https://diy.org'},
+		{id: 2, title: 'Google', url: 'http://google.com'},
+		{id: 3, title: 'Yahoo', url: 'http://yahoo.com'},
+	],
+	render: {
+		option: function(data, escape) {
+			return '<div>' +
+					'<span class="title">' + escape(data.title) + '</span>' +
+					'<span class="url">' + escape(data.url) + '</span>' +
+				'</div>';
+		},
+		item: function(data, escape) {
+			return '<div><a href="' + escape(data.url) + '">' + escape(data.title) + '</a></div>';
+		}
+	}
+});
+{% endset %}
+</script>
+
+
+{{ demo( label, html, script, style) }}

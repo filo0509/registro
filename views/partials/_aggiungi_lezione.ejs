@@ -1,0 +1,86 @@
+<div
+      class="modal fade"
+      id="aggiungiLezioneForm"
+      tabindex="-1"
+      role="dialog"
+      aria-hidden="true"
+    >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-close">
+                <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                ></button>
+            </div>
+            <!-- End Header -->
+
+            <!-- Body -->
+            <div class="modal-body">
+                <!-- Sign up -->
+                <div>
+                    <!-- Heading -->
+                    <div class="text-center mb-7">
+                        <h2>Firma ora</h2>
+                        <p>
+                            Classe <%-classe.name%>
+                        </p>
+                    </div>
+                    <!-- End Heading -->
+
+                    <!-- Ho dei problemi con il submitting -->
+                    <form class="" method="post" action="/registro_docente/<%=classe.id%>/lezioni/">
+                        <!-- Form -->
+                        <div class="mb-3">
+                            <label class="form-label">Ora</label>
+                            <select name="selectHour" class="form-control">
+                                <option value="" disabled selected>- Seleziona un'ora -</option>
+                                <% for(var i = 1; i < 6; i++){ %>
+                                    <option id="hout" value="<%=i%>"> <%=i%> </option>
+                                <% } %>
+                            </select>
+                            <span class="invalid-feedback">Inserisci l'ora che vuoi firmare</span>
+                        </div>
+                        <!-- End Form -->
+
+                        <!-- Form -->
+                        <div class="mb-3">
+                            <label class="form-label">Materia</label>
+                            <select name="selectmateria" class="form-control">
+                                <option value="" disabled selected>- Seleziona una materia -</option>
+                                <% classe.subjects.forEach(materia => { %>
+                                    <option id="materia" value="<%=materia.name%>"> <%=materia.name%> </option>
+                                <% }); %>
+                            </select>
+                            <span class="invalid-feedback">Inserisci il nome della materia</span>
+                        </div>
+                        <!-- End Form -->
+
+                        <!-- Form -->
+                        <div class="mb-3">
+                            <label class="form-label" for="description">Inserisci la descrizione</label>
+                            <textarea id="description" name="description" class="form-control" placeholder="Descrizione" rows="4"></textarea>
+                        </div>
+                        <!-- End Form -->
+                            
+                        <div class="mb-3">
+                            <label class="form-label">Data</label>
+                            <input name="selectdata" class="form-control" type="date" required pattern="\d{4}-\d{2}-\d{2}"></input>
+                            <span class="invalid-feedback">Inserisci la data</span>
+                        </div>
+
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn-primary form-control-lg">
+                                Conferma
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <!-- End Sign up -->
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,8 @@
+Le prime cose da fare sono:
+1. Consentire ad un professore di aggiungere un voto solo per la sua materia.
+2. Consentire di togliere i voti
+3. Consentire di mettere i voti in serie
+4. Consentire alle segretarie di aggiungere la classi aventi SOLO certe materie e certi professori
+5. Indicare il calendario della classe con gli orari dei professori
+6. Assenze
+7. Colloqui
