@@ -180,8 +180,8 @@ passport.use(
       clientID:
         "641765305810-77p3opguck443n5vjbqp6rm8p0dmlu4e.apps.googleusercontent.com",
       clientSecret: "cEcJO4aJFxWWtuE56is627xO",
-      //callbackURL: "https://guarded-sea-38275.herokuapp.com/auth/google/callback",
-      callbackURL: "http://localhost:3000/auth/google/callback",
+      callbackURL: "https://registro-bx1s.onrender.com/auth/google/callback",
+      //callbackURL: "http://localhost:3000/auth/google/callback",
       userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
     },
     async function (accessToken, refreshToken, profile, cb) {
