@@ -1,3 +1,4 @@
+import AdminJS from '../../..';
 import { FeatureType } from '../../../adminjs-options.interface';
 import { ResourceOptions } from '../../decorators/resource/resource-options.interface';
 /**
@@ -35,5 +36,5 @@ declare const mergeResourceOptions: (oldOptions?: ResourceOptions, newOptions?: 
  *   // resource options goes here.
  * })
  */
-declare const buildFeature: (options?: ResourceOptions) => FeatureType;
+declare const buildFeature: (options?: ResourceOptions | ((admin: AdminJS) => ResourceOptions)) => FeatureType;
 export { mergeResourceOptions, buildFeature };

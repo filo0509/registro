@@ -18,7 +18,7 @@ import { ActionProps } from '../actions/action.props';
  *             icon: 'Add',
  *             inVisible: (resource, record) => record.param('email') !== '',
  *             actionType: 'record',
- *             component: AdminJS.bundle('./my-new-action'),
+ *             component: 'MyNewAction',
  *             handler: (request, response, data) => {
  *               return {
  *                  ...

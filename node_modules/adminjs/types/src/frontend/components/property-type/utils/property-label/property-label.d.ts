@@ -5,5 +5,7 @@ export declare type PropertyLabelProps = {
     property: PropertyJSON;
     props?: LabelProps;
 };
-declare const PropertyLabel: React.FC<PropertyLabelProps>;
-export { PropertyLabel as default, PropertyLabel, };
+declare const OverridablePropertyLabel: React.ComponentType<PropertyLabelProps & {
+    OriginalComponent?: React.ComponentType<PropertyLabelProps> | undefined;
+}>;
+export { OverridablePropertyLabel as default, OverridablePropertyLabel as PropertyLabel, };

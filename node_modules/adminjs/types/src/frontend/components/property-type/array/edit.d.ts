@@ -1,5 +1,6 @@
 import React from 'react';
 import { EditPropertyPropsInArray } from '../base-property-props';
-declare type EditProps = Required<EditPropertyPropsInArray>;
-declare const Edit: React.FC<EditProps>;
-export { Edit as default, Edit, };
+declare const OverridableEdit: React.ComponentType<Required<EditPropertyPropsInArray> & {
+    OriginalComponent?: React.ComponentType<Required<EditPropertyPropsInArray>> | undefined;
+}>;
+export { OverridableEdit as default, OverridableEdit as Edit, };

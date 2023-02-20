@@ -1,6 +1,9 @@
-import { CurrencyInputProps } from '@adminjs/design-system';
-import { FC } from 'react';
+import React from 'react';
 import { EditPropertyProps } from '../base-property-props';
-declare type CurrencyEditPropertyProps = EditPropertyProps & CurrencyInputProps;
-declare const Filter: FC<CurrencyEditPropertyProps>;
-export default Filter;
+declare const _default: React.ComponentType<import("../base-property-props").BasePropertyProps & {
+    onChange: import("../base-property-props").OnPropertyChange;
+    record: import("../../..").RecordJSON;
+} & {
+    OriginalComponent?: React.ComponentType<EditPropertyProps> | undefined;
+}>;
+export default _default;

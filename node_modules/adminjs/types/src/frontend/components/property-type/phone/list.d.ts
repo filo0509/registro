@@ -1,9 +1,6 @@
-import { FC } from 'react';
-import { RecordJSON, ResourceJSON, PropertyJSON } from '../../../interfaces';
-interface Props {
-    property: PropertyJSON;
-    record: RecordJSON;
-    resource: ResourceJSON;
-}
-declare const List: FC<Props>;
-export default List;
+import React from 'react';
+import { ShowPropertyProps } from '../base-property-props';
+declare const _default: React.ComponentType<ShowPropertyProps & {
+    OriginalComponent?: React.ComponentType<ShowPropertyProps> | undefined;
+}>;
+export default _default;

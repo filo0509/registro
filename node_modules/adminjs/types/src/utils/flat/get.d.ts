@@ -10,5 +10,5 @@ import { GetOptions } from './flat.types';
  *                                      otherwise it tries to find any nested objects and returns
  *                                      them
  */
-declare const get: (params?: FlattenParams, propertyPath?: string | undefined, options?: GetOptions | undefined) => any;
+declare const get: (params?: FlattenParams, propertyPath?: string, options?: GetOptions) => any;
 export { get };

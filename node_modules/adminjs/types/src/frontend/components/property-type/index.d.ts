@@ -1,4 +1,5 @@
 /// <reference types="react" />
+import CleanPropertyComponent from './clean-property-component';
 import { BasePropertyComponentProps } from './base-property-props';
 declare type BasePropertyComponentType = React.FC<BasePropertyComponentProps> & {
     DefaultType: any;
@@ -10,6 +11,6 @@ declare type BasePropertyComponentType = React.FC<BasePropertyComponentProps> & 
     Password: any;
 };
 declare const BasePropertyComponentExtended: BasePropertyComponentType;
-export { BasePropertyComponentExtended as default, BasePropertyComponentExtended as BasePropertyComponent, };
+export { BasePropertyComponentExtended as default, BasePropertyComponentExtended as BasePropertyComponent, CleanPropertyComponent, };
 export * from './base-property-props';
 export * from './utils';

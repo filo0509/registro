@@ -1,9 +1,10 @@
+import AdminJS from '../../adminjs';
 /**
  * Generates entry file for all UsersComponents.
  * Entry consists of 3 parts:
- * 1. setup AdminJS.UserComponents map.
+ * 1. Setup AdminJS.UserComponents map.
  * 2. List of all environmental variables passed to AdminJS in configuration option.
- * 3. Import of UserComponents defined by AdminJS.bundle(src)
+ * 3. Imports of user components defined by ComponentLoader.
  *
  * @param {AdminJS}    admin
  * @param {String}      entryPath  path to folder where entry file is located
@@ -11,5 +12,5 @@
  *
  * @private
  */
-declare const generateUserComponentEntry: (admin: any, entryPath: string) => string;
+declare const generateUserComponentEntry: (admin: AdminJS, entryPath: string) => string;
 export default generateUserComponentEntry;

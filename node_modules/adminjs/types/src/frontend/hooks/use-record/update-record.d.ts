@@ -25,5 +25,5 @@ import { RecordJSON } from '../../interfaces';
  *                                      it's referencing to
  * @private
  */
-export declare const updateRecord: (property: string, value: any, selectedRecord?: RecordJSON | undefined) => (previousRecord: RecordJSON) => RecordJSON;
+export declare const updateRecord: (property: string, value: any, selectedRecord?: RecordJSON) => (previousRecord: RecordJSON) => RecordJSON;
 export default updateRecord;

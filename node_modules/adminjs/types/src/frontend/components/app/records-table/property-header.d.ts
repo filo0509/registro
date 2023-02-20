@@ -16,5 +16,7 @@ export declare type PropertyHeaderProps = {
     sortBy?: string;
     display?: string | Array<string>;
 };
-export declare const PropertyHeader: React.FC<PropertyHeaderProps>;
-export default PropertyHeader;
+declare const OverridablePropertyHeader: React.ComponentType<PropertyHeaderProps & {
+    OriginalComponent?: React.ComponentType<PropertyHeaderProps> | undefined;
+}>;
+export { OverridablePropertyHeader as default, OverridablePropertyHeader as PropertyHeader, };

@@ -18,17 +18,7 @@ export declare type ActionButtonProps = {
     actionPerformed?: (action: ActionResponse) => any;
     children?: React.ReactNode;
 };
-/**
- * Renders Button which redirects to given action
- *
- * ### Usage
- *
- * ```
- * import { ActionButton } from 'adminjs'
- * ```
- *
- * @component
- * @subcategory Application
- */
-export declare const ActionButton: React.FC<ActionButtonProps>;
-export default ActionButton;
+declare const OverridableActionButton: React.ComponentType<ActionButtonProps & {
+    OriginalComponent?: React.ComponentType<ActionButtonProps> | undefined;
+}>;
+export { OverridableActionButton as default, OverridableActionButton as ActionButton, };

@@ -9,7 +9,7 @@ export declare type SidebarResourceSectionProps = {
     resources: Array<ResourceJSON>;
 };
 declare const SidebarResourceSection: React.ComponentType<SidebarResourceSectionProps & {
-    OriginalComponent?: React.FunctionComponent<SidebarResourceSectionProps> | React.ComponentClass<SidebarResourceSectionProps, any> | undefined;
+    OriginalComponent?: React.ComponentType<SidebarResourceSectionProps> | undefined;
 }>;
 export { SidebarResourceSection };
 export default SidebarResourceSection;

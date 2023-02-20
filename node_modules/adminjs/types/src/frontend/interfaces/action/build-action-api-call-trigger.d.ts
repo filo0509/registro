@@ -9,4 +9,4 @@ export declare type BuildActionCallApiTriggerOptions = {
     actionResponseHandler: ReturnType<typeof useActionResponseHandler>;
     search?: Location['search'];
 };
-export declare const buildActionCallApiTrigger: <K>(options: BuildActionCallApiTriggerOptions) => CallApiFunction<K>;
+export declare const buildActionCallApiTrigger: <K extends ActionResponse>(options: BuildActionCallApiTriggerOptions) => CallApiFunction<K>;

@@ -9,5 +9,7 @@ export declare type RecordInListProps = {
     onSelect?: (record: RecordJSON) => void;
     isSelected?: boolean;
 };
-export declare const RecordInList: React.FC<RecordInListProps>;
-export default RecordInList;
+declare const OverridableRecordInList: React.ComponentType<RecordInListProps & {
+    OriginalComponent?: React.ComponentType<RecordInListProps> | undefined;
+}>;
+export { OverridableRecordInList as default, OverridableRecordInList as RecordInList, };

@@ -7,6 +7,6 @@ export declare type LoggedInProps = {
     };
 };
 declare const OverridableLoggedIn: React.ComponentType<LoggedInProps & {
-    OriginalComponent?: React.FunctionComponent<LoggedInProps> | React.ComponentClass<LoggedInProps, any> | undefined;
+    OriginalComponent?: React.ComponentType<LoggedInProps> | undefined;
 }>;
 export { OverridableLoggedIn as default, OverridableLoggedIn as LoggedIn, };

@@ -1,2 +1,2 @@
 declare const useHistoryListen: () => void;
-export default useHistoryListen;
+export { useHistoryListen, useHistoryListen as default, };

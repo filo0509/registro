@@ -1,5 +1,5 @@
 import React from 'react';
 declare const _default: React.ComponentType<{
-    OriginalComponent?: React.FunctionComponent<{}> | React.ComponentClass<{}, any> | undefined;
+    OriginalComponent?: React.ComponentType<{}> | undefined;
 }>;
 export default _default;

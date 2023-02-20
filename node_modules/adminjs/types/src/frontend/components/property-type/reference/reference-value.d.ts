@@ -1,8 +1,7 @@
 import React from 'react';
-import { RecordJSON, PropertyJSON } from '../../../interfaces';
-interface Props {
-    property: PropertyJSON;
-    record: RecordJSON;
-}
-declare const ReferenceValue: React.FC<Props>;
-export default ReferenceValue;
+import { ShowPropertyProps } from '../base-property-props';
+declare type Props = Pick<ShowPropertyProps, 'property' | 'record'>;
+declare const _default: React.ComponentType<Props & {
+    OriginalComponent?: React.ComponentType<Props> | undefined;
+}>;
+export default _default;

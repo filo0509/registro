@@ -4,7 +4,7 @@ export declare type NoRecordsProps = {
     resource: ResourceJSON;
 };
 declare const NoRecords: React.ComponentType<NoRecordsProps & {
-    OriginalComponent?: React.FunctionComponent<NoRecordsProps> | React.ComponentClass<NoRecordsProps, any> | undefined;
+    OriginalComponent?: React.ComponentType<NoRecordsProps> | undefined;
 }>;
 export { NoRecords };
 export default NoRecords;

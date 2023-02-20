@@ -1,13 +1,16 @@
-// !Ogni tanto bisogna aggiornare le impostazioni della mail dalla quale mando le mail
-// !Failed to fetch user profile, oppure, failed to obtain access token li ottengo perchè google
-// !non accetta i localhost
+// ? Ogni tanto bisogna aggiornare le impostazioni della mail dalla quale mando le mail
+// ? Failed to fetch user profile, oppure, failed to obtain access token li ottengo perchè google
+// ? non accetta i localhost
 
 /*
-  *registro_docente/:classe/media/:studente/:materia -> voti di uno studente in una materia
-  *registro_docente/:classe/media/:studente          -> voti di uno studente
-  *registro_docente/:classe/media/:materia           -> voti materia
-*/
+ *registro_docente/:classe/media/:studente/:materia -> voti di uno studente in una materia
+ *registro_docente/:classe/media/:studente          -> voti di uno studente
+ *registro_docente/:classe/media/:materia           -> voti materia
+ */
 
+// ToDO I have to mirror the situazione_studente of the teacher for the students
+
+// All the modules should imported here
 const express = require("express");
 const ejs = require("ejs");
 const bodyParser = require("body-parser");
@@ -26,11 +29,12 @@ const AdminJSMongoose = require("@adminjs/mongoose");
 const AdminJSExpress = require("@adminjs/express");
 const nodeCron = require("node-cron");
 const moment = require("moment");
-const bcrypt = require('bcryptjs');
+const bcrypt = require("bcryptjs");
 
+oneMonth = 1000 * 60 * 60 * 24 * 30;
+
+// AdminJS is used for the administration of the database directly on the website
 AdminJS.registerAdapter(AdminJSMongoose);
-
-const oneMonth = 1000 * 60 * 60 * 24 * 30;
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -38,6 +42,7 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(cookieParser());
 
+// setting up the sessions
 app.use(
   session({
     secret: "bsdfb5ju435h34v53j4v53h45",
@@ -49,12 +54,13 @@ app.use(
   })
 );
 
+// we use passport to handle the sessions
 app.use(passport.initialize());
 app.use(passport.session());
 
 mongoose.Promise = global.Promise;
 
-// Connect MongoDB at default port 27017.
+// Connect MongoDB with mongoose, it simplyfies all the usage of the DB.
 mongoose.connect(
   "mongodb+srv://filippodonati:Filodatorcere.05@cluster0.aeaxwow.mongodb.net/?retryWrites=true&w=majority",
   {
@@ -69,12 +75,14 @@ mongoose.connect(
     }
   }
 );
+
+// This is the schema for the different subjects
 const subjectSchema = new mongoose.Schema({
   teacher: String,
   name: String,
 });
 
-// Quando parlo di studente parlo sempre dell'id
+// This is the schema for a grade
 const gradeSchema = new mongoose.Schema({
   student: String,
   grade: Number,
@@ -83,7 +91,7 @@ const gradeSchema = new mongoose.Schema({
   classroom: String,
 });
 
-// mongoose schema that represents the user and has a field for an array of grades
+// mongoose schema that represents the user
 const lessonSchema = new mongoose.Schema({
   title: String,
   description: String,
@@ -93,15 +101,17 @@ const lessonSchema = new mongoose.Schema({
   ora: Number,
 });
 
+// the average of the grades in a certain subject
 const averageGradeSchema = new mongoose.Schema({
   mean: Number,
   subject: subjectSchema,
 });
 
+// this is the schema of a single user (login with google)
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
-    required: true
+    required: true,
   },
   password: String,
   username: String,
@@ -115,6 +125,7 @@ const userSchema = new mongoose.Schema({
   averageGrades: [Number],
 });
 
+// the schema for a classroom that contains N students
 const classroomSchema = new mongoose.Schema({
   name: String,
   teachers: [String],
@@ -133,12 +144,13 @@ const AdminSchema = new mongoose.Schema({
 userSchema.plugin(passportLocalMongoose);
 userSchema.plugin(findOrCreate);
 
-const User      = new mongoose.model("User", userSchema);
-const Grade     = new mongoose.model("Grade", gradeSchema);
+// Create the effective models in the DB
+const User = new mongoose.model("User", userSchema);
+const Grade = new mongoose.model("Grade", gradeSchema);
 const Classroom = new mongoose.model("Classroom", classroomSchema);
-const Admin     = new mongoose.model("Admin", AdminSchema);
-const Lesson    = new mongoose.model("Lesson", lessonSchema);
-const adminJs   = new AdminJS({
+const Admin = new mongoose.model("Admin", AdminSchema);
+const Lesson = new mongoose.model("Lesson", lessonSchema);
+const adminJs = new AdminJS({
   resources: [User, Grade, Classroom],
 });
 
@@ -147,7 +159,7 @@ const router = AdminJSExpress.buildRouter(adminJs);
 const adminJsOptions = {
   resources: [Admin],
 };
-// Per la admin page
+// For the admin page
 app.use(adminJs.options.rootPath, router);
 
 passport.use(User.createStrategy());
@@ -209,6 +221,7 @@ app.get(
   }
 );
 
+// The root route with all the links to the other pages.
 app.get("/", function (req, res) {
   if (req.isAuthenticated() && req.user.teacher == true) {
     User.findOne({ _id: req.session.passport.user }, function (err, profile) {
@@ -232,6 +245,7 @@ app.get("/", function (req, res) {
   }
 });
 
+// Page for the students
 app.get("/registro_studente", function (req, res) {
   if (req.isAuthenticated() && req.user.studente == true) {
     res.render("registro_studente");
@@ -240,6 +254,7 @@ app.get("/registro_studente", function (req, res) {
   }
 });
 
+// Page for the teachers
 app.get("/registro_docente", function (req, res) {
   if (req.isAuthenticated() && req.user.teacher == true) {
     Classroom.find(
@@ -263,13 +278,15 @@ app.get("/registro_docente", function (req, res) {
   }
 });
 
+// Page where a teacher can see the overall situation of a single class
+// ToDo I have to cancel the average_grades from the DB because it ruins performance
+// ? lo avevo fatto ma github ha perso le modifiche
 app.get("/registro_docente/:classe/medie", async function (req, res) {
   if (req.isAuthenticated() && req.user.teacher == true) {
     Classroom.findOne({ _id: req.params.classe }, async (err, classi) => {
       if (err) {
         console.log(`Error: ` + err);
       } else {
-        // devo trovare le medie dei voti corrispondenti alla classe
         // put in grades_average the average of the grades of the class based on the subject
         var sumGrades = [];
         var numGrades = [];
@@ -313,15 +330,6 @@ app.get("/registro_docente/:classe/medie", async function (req, res) {
               averageGrades[i][j] = 0;
             }
           }
-          //   User.updateOne(
-          //     { _id: classi.students[i] },
-          //     { averageGrades: averageGrades[i] },
-          //     (err, doc) => {
-          //       if (err) {
-          //         console.log(`Error: ` + err);
-          //       }
-          //     }
-          //   );
           console.log(classi.students[i]);
         }
 
@@ -359,6 +367,7 @@ app.get("/registro_docente/:classe/medie", async function (req, res) {
   }
 });
 
+// the situation for a single student
 app.get("/registro_docente/:classe/medie/:studente", async function (req, res) {
   User.findById(req.params.studente, (err, doc) => {
     // order the doc.grades based on the date in chronological order
@@ -368,7 +377,6 @@ app.get("/registro_docente/:classe/medie/:studente", async function (req, res) {
     } else {
       Classroom.findById(req.params.classe, (err, classe) => {
         console.log(classe);
-        // devo ancora ordinare i voti per materia per vedere l'andamento dello studente
         res.render("situazione_studente", {
           subjects: classe.subjects,
           student: doc,
@@ -431,6 +439,7 @@ app.post("/registro_docente/:classe/medie", async function (req, res) {
   }
 });
 
+// the list of the "lectures" for the students
 app.get("/lezioni", function (req, res) {
   if (req.isAuthenticated()) {
     Classroom.findOne(
@@ -439,7 +448,7 @@ app.get("/lezioni", function (req, res) {
         if (err) {
           console.log(`Error: ` + err);
         } else {
-          // sort by date in chronological order the lessons of classess
+          // sort by date in chronological order the lessons of classes
           classe.lessons.sort((a, b) => (a.date > b.date ? 1 : -1));
           res.render("lezioni_classe", {
             classe: classe,
@@ -453,13 +462,14 @@ app.get("/lezioni", function (req, res) {
   }
 });
 
+// the same thing as /lezioni but for the teacher
 app.get("/registro_docente/:classe/lezioni", function (req, res) {
   if (req.isAuthenticated() && req.user.teacher == true) {
     Classroom.findOne({ id: req.params.classe }, (err, classe) => {
       if (err) {
         console.log(`Error: ` + err);
       } else {
-        // sort by date in chronological order the lessons of classess
+        // sort by date in chronological order the lessons of classes
         classe.lessons.sort((a, b) => (a.date > b.date ? 1 : -1));
         res.render("lezioni_classe", {
           classe: classe,
@@ -472,6 +482,7 @@ app.get("/registro_docente/:classe/lezioni", function (req, res) {
   }
 });
 
+// this is the posto request fot the lessons, a teacher can add a lesson
 app.post("/registro_docente/:classe/lezioni", async function (req, res) {
   if (req.isAuthenticated() && req.user.teacher == true) {
     const materia = req.body.selectmateria;
@@ -501,13 +512,11 @@ app.post("/registro_docente/:classe/lezioni", async function (req, res) {
       }
     );
 
-    res.redirect(`/registro_docente/${classe}/medie`, {
-      linkRegistro: "",
-      displayName: req.user.name,
-    });
+    res.redirect("/");
   }
 });
 
+// The dashboard where a student can see his situation
 app.get("/dashboard_studente", function (req, res) {
   if (req.isAuthenticated()) {
     User.findById(req.user.id, (err, doc) => {
@@ -528,6 +537,7 @@ app.get("/dashboard_studente", function (req, res) {
   }
 });
 
+// the grades of a students
 app.get("/voti_studente", function (req, res) {
   console.log(req.session.passport.user);
   if (req.isAuthenticated()) {
@@ -551,6 +561,7 @@ app.get("/voti_studente", function (req, res) {
   }
 });
 
+// ToDo !!!!
 app.get("/calendario", function (req, res) {
   if (req.isAuthenticated()) {
     User.findOne({ _id: req.session.passport.user }, function (err, doc) {
@@ -577,29 +588,26 @@ app.get("/calendario", function (req, res) {
   }
 });
 
+// ToDO !!!!
 app.get("/registro_segretarie", function (req, res) {
   if (req.isAuthenticated() && req.user.segretario == true) {
-    Classroom.find(
-        {
-
-        },
-        (err, doc) => {
-          if (err) {
-            console.log(`Error: ` + err);
-          } else {
-            res.render("registro_segretarie", {
-              classrooms: doc,
-              linkRegistro: "",
-              displayName: req.user.name,
-            });
-          }
-        }
-      );
+    Classroom.find({}, (err, doc) => {
+      if (err) {
+        console.log(`Error: ` + err);
+      } else {
+        res.render("registro_segretarie", {
+          classrooms: doc,
+          linkRegistro: "",
+          displayName: req.user.name,
+        });
+      }
+    });
   } else {
     res.redirect("/auth/google");
   }
 });
 
+// !Start the server
 app.listen(process.env.PORT || 3000, function () {
   console.log("Listening on port 3000, http://localhost:3000");
 });

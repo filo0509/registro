@@ -1,10 +1,6 @@
-import { PureComponent, ReactChild } from 'react';
-import { RecordJSON, PropertyJSON } from '../../../interfaces';
-interface Props {
-    property: PropertyJSON;
-    record: RecordJSON;
-}
-export default class List extends PureComponent<Props> {
-    render(): ReactChild;
-}
-export {};
+import React from 'react';
+import { ShowPropertyProps } from '../base-property-props';
+declare const _default: React.ComponentType<ShowPropertyProps & {
+    OriginalComponent?: React.ComponentType<ShowPropertyProps> | undefined;
+}>;
+export default _default;

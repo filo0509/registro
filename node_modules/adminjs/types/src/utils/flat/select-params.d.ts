@@ -7,5 +7,5 @@ import { FlattenParams, GetOptions } from './flat.types';
  * @param {GetOptions} [options]
  * @returns {FlattenParams}
  */
-declare const selectParams: (params: FlattenParams, properties: string | Array<string>, options?: GetOptions | undefined) => FlattenParams;
+declare const selectParams: (params: FlattenParams, properties: string | Array<string>, options?: GetOptions) => FlattenParams;
 export { selectParams };

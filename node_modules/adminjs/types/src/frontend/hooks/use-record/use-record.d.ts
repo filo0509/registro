@@ -11,5 +11,5 @@ import { UseRecordOptions, UseRecordResult } from './use-record.type';
  * @param {UseRecordOptions} [options]
  * @return {UseRecordResult}
  */
-export declare const useRecord: (initialRecord: RecordJSON | undefined, resourceId: string, options?: UseRecordOptions | undefined) => UseRecordResult;
+export declare const useRecord: (initialRecord: RecordJSON | undefined, resourceId: string, options?: UseRecordOptions) => UseRecordResult;
 export default useRecord;

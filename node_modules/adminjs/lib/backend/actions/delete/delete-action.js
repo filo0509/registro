@@ -38,7 +38,7 @@ const DeleteAction = {
    * @implements ActionHandler
    * @memberof module:DeleteAction
    */
-  handler: async (request, response, data) => {
+  handler: async (request, response, context) => {
     var _resource$_decorated;
 
     const {
@@ -47,14 +47,14 @@ const DeleteAction = {
       currentAdmin,
       h,
       translateMessage
-    } = data;
+    } = context;
 
     if (!request.params.recordId || !record) {
       throw new _notFoundError.default(['You have to pass "recordId" to Delete Action'].join('\n'), 'Action#handler');
     }
 
     try {
-      await resource.delete(request.params.recordId);
+      await resource.delete(request.params.recordId, context);
     } catch (error) {
       if (error instanceof _validationError.default) {
         var _error$baseError;

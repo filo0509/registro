@@ -3,5 +3,7 @@ import { VersionProps } from '../../../adminjs-options.interface';
 export declare type Props = {
     versions: VersionProps;
 };
-export declare const Version: React.FC<Props>;
-export default Version;
+declare const OverridableVersion: React.ComponentType<Props & {
+    OriginalComponent?: React.ComponentType<Props> | undefined;
+}>;
+export { OverridableVersion as default, OverridableVersion as Version, };

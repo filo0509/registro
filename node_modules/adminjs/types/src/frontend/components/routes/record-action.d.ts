@@ -1,3 +1,5 @@
 import React from 'react';
-declare const RecordAction: React.FC;
-export default RecordAction;
+declare const _default: React.ComponentType<{
+    OriginalComponent?: React.ComponentType<{}> | undefined;
+}>;
+export default _default;

@@ -5,5 +5,7 @@ export declare type FilterProps = {
     toggleFilter: () => void;
     isVisible: boolean;
 };
-export declare const FilterDrawer: React.FC<FilterProps>;
-export default FilterDrawer;
+declare const OverridableFilterDrawer: React.ComponentType<FilterProps & {
+    OriginalComponent?: React.ComponentType<FilterProps> | undefined;
+}>;
+export { OverridableFilterDrawer as default, OverridableFilterDrawer as FilterDrawer, };

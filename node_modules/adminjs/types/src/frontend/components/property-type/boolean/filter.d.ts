@@ -1,8 +1,10 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { FilterPropertyProps } from '../base-property-props';
-declare class Filter extends React.PureComponent<FilterPropertyProps> {
-    constructor(props: any);
-    handleChange(selected: any): void;
-    render(): ReactNode;
-}
-export default Filter;
+declare const _default: React.ComponentType<import("../base-property-props").BasePropertyProps & {
+    filter: any;
+    onChange: import("../base-property-props").OnPropertyChange;
+    record: undefined;
+} & {
+    OriginalComponent?: React.ComponentType<FilterPropertyProps> | undefined;
+}>;
+export default _default;

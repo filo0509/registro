@@ -1,6 +1,10 @@
-import { PhoneInputProps } from '@adminjs/design-system';
-import { FC } from 'react';
-import { EditPropertyProps } from '../base-property-props';
-declare type PhoneEditPropertyProps = EditPropertyProps & PhoneInputProps;
-declare const Filter: FC<PhoneEditPropertyProps>;
-export default Filter;
+import React from 'react';
+import { FilterPropertyProps } from '../base-property-props';
+declare const _default: React.ComponentType<import("../base-property-props").BasePropertyProps & {
+    filter: any;
+    onChange: import("../base-property-props").OnPropertyChange;
+    record: undefined;
+} & {
+    OriginalComponent?: React.ComponentType<FilterPropertyProps> | undefined;
+}>;
+export default _default;

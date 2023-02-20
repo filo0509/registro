@@ -1,7 +1,8 @@
 import React from 'react'
-
 import styled from 'styled-components'
 import { Box, BoxProps, DrawerContent, DrawerFooter } from '@adminjs/design-system'
+
+import allowOverride from '../../../hoc/allow-override'
 
 const StyledWrapperWithFilter = styled(Box)`
   & > ${DrawerContent} {
@@ -40,10 +41,10 @@ const Wrapper: React.FC<WrapperProps> = (props) => {
 
   const Component = showFilter ? StyledWrapperWithFilter : StyledWrapper
   return (
-    <Component {...rest} variant="grey" mx="auto">
+    <Component {...rest} variant="grey" mx="auto" data-css="styled-wrapper">
       {children}
     </Component>
   )
 }
 
-export default Wrapper
+export default allowOverride(Wrapper, 'RouteWrapper')

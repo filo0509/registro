@@ -3,6 +3,7 @@ import { BaseProperty, BaseRecord, ParamsType } from '..';
 import { Filter } from '../../utils';
 import { ResourceOptions, ResourceDecorator } from '../../decorators';
 import AdminJS from '../../../adminjs';
+import { ActionContext } from '../../actions';
 /**
  * Representation of a ORM Resource in AdminJS. Visually resource is a list item in the sidebar.
  * Each resource has many records and many properties.
@@ -89,20 +90,22 @@ declare class BaseResource {
     /**
      * Returns number of elements for given resource by including filters
      * @param  {Filter} filter        represents what data should be included
+     * @param  {ActionContext}           [context]
      * @return {Promise<Number>}
      * @abstract
      */
-    count(filter: Filter): Promise<number>;
+    count(filter: Filter, context?: ActionContext): Promise<number>;
     /**
      * Returns actual records for given resource
      *
-     * @param  {Filter} filters                        what data should be included
+     * @param  {Filter} filter                        what data should be included
      * @param  {Object} options
      * @param  {Number} [options.limit]                  how many records should be taken
      * @param  {Number} [options.offset]                 offset
      * @param  {Object} [options.sort]                   sort
      * @param  {Number} [options.sort.sortBy]            sortable field
      * @param  {Number} [options.sort.direction]         either asc or desc
+     * @param  {ActionContext}           [context]
      * @return {Promise<BaseRecord[]>}                          list of records
      * @abstract
      * @example
@@ -119,23 +122,25 @@ declare class BaseResource {
             sortBy?: string;
             direction?: 'asc' | 'desc';
         };
-    }): Promise<Array<BaseRecord>>;
+    }, context?: ActionContext): Promise<Array<BaseRecord>>;
     /**
      * Finds one Record in the Resource by its id
      *
      * @param  {String} id      uniq id of the Resource Record
+     * @param  {ActionContext}           [context]
      * @return {Promise<BaseRecord> | null}   record
      * @abstract
      */
-    findOne(id: string): Promise<BaseRecord | null>;
+    findOne(id: string, context?: ActionContext): Promise<BaseRecord | null>;
     /**
      * Finds many records based on the resource ids
      *
-     * @param   {Array<string>}              list of ids to find
+     * @param   {Array<string>}          ids list of ids to find
+     * @param  {ActionContext}           [context]
      *
      * @return  {Promise<Array<BaseRecord>>} records
      */
-    findMany(ids: Array<string | number>): Promise<Array<BaseRecord>>;
+    findMany(ids: Array<string | number>, context?: ActionContext): Promise<Array<BaseRecord>>;
     /**
      * Builds new Record of given Resource.
      *
@@ -152,31 +157,34 @@ declare class BaseResource {
      * Creates new record
      *
      * @param  {Record<string, any>}     params
+     * @param  {ActionContext}           [context]
      * @return {Promise<Object>}         created record converted to raw Object which
      *                                   can be used to initiate new {@link BaseRecord} instance
      * @throws {ValidationError}         If there are validation errors it should be thrown
      * @abstract
      */
-    create(params: Record<string, any>): Promise<ParamsType>;
+    create(params: Record<string, any>, context?: ActionContext): Promise<ParamsType>;
     /**
-     * Updates an the record.
+     * Updates the record.
      *
      * @param  {String} id               uniq id of the Resource Record
      * @param  {Record<string, any>}     params
+     * @param  {ActionContext}           [context]
      * @return {Promise<Object>}         created record converted to raw Object which
      *                                   can be used to initiate new {@link BaseRecord} instance
      * @throws {ValidationError}         If there are validation errors it should be thrown
      * @abstract
      */
-    update(id: string, params: Record<string, any>): Promise<ParamsType>;
+    update(id: string, params: Record<string, any>, context?: ActionContext): Promise<ParamsType>;
     /**
      * Delete given record by id
      *
      * @param  {String | Number}           id id of the Record
+     * @param  {ActionContext}           [context]
      * @throws {ValidationError}           If there are validation errors it should be thrown
      * @abstract
      */
-    delete(id: string): Promise<void>;
+    delete(id: string, context?: ActionContext): Promise<void>;
     /**
      * Assigns given decorator to the Resource. Than it will be available under
      * resource.decorate() method

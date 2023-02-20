@@ -1,5 +1,6 @@
 import BaseProperty from '../../adapters/property/base-property';
 import BaseRecord from '../../adapters/record/base-record';
+import { ActionContext } from '../../actions';
 export declare const PARAM_SEPARATOR = "~~";
 export declare type FilterElement = {
     path: string;
@@ -58,7 +59,7 @@ export declare class Filter {
     /**
      * Populates all filtered properties which refers to other resources
      */
-    populate(): Promise<Filter>;
+    populate(context: ActionContext): Promise<Filter>;
     reduce<T>(callback: ReduceCallback<T>, initial: T): T;
     isVisible(): boolean;
 }
