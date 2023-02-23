@@ -9,16 +9,15 @@
  */
 
 // ToDO I have to mirror the situazione_studente of the teacher for the students
+// ToDO sistemare login e register
 
 // All the modules should imported here
 const express = require("express");
 const ejs = require("ejs");
 const bodyParser = require("body-parser");
 const { google } = require("googleapis");
-const passport = require("passport");
 const mongoose = require("mongoose");
 const session = require("express-session");
-const passportLocalMongoose = require("passport-local-mongoose");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const findOrCreate = require("mongoose-findorcreate");
 const { request } = require("express");
@@ -30,6 +29,9 @@ const AdminJSExpress = require("@adminjs/express");
 const nodeCron = require("node-cron");
 const moment = require("moment");
 const bcrypt = require("bcryptjs");
+const LocalStrategy = require("passport-local");
+const passportLocalMongoose = require("passport-local-mongoose");
+const passport = require("passport")
 
 oneMonth = 1000 * 60 * 60 * 24 * 30;
 
@@ -109,10 +111,7 @@ const averageGradeSchema = new mongoose.Schema({
 
 // this is the schema of a single user (login with google)
 const userSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
-  },
+  email: String,
   password: String,
   username: String,
   name: String,
@@ -162,7 +161,7 @@ const adminJsOptions = {
 // For the admin page
 app.use(adminJs.options.rootPath, router);
 
-passport.use(User.createStrategy());
+passport.use(new LocalStrategy(User.authenticate()));
 
 passport.serializeUser(function (user, done) {
   done(null, user.id);
@@ -220,6 +219,46 @@ app.get(
     res.redirect("/");
   }
 );
+
+app.get("/register", function(req, res){
+    res.render("register");
+});
+
+// handeling user sign up
+app.post("/register", function(req, res){
+    // console.log(req.body.username);
+    // console.log(req.body.password);
+    User.register(new User({username: req.body.username, name: req.body.name}),req.body.password, function(err, user){
+        if(err){
+            console.log(err);
+            return res.render("register");
+        }
+        passport.authenticate("local")(req, res, function(){
+            res.redirect("/");
+        });
+    });
+});
+
+// Login Form
+app.get("/login", function(req, res){
+    res.render("login");
+});
+
+// Login Logic
+// middleware
+app.post("/login", passport.authenticate("local",{
+    successRedirect: "/",
+    failureRedirect: "/login"
+}), function(req, res){
+    
+});
+
+app.get("/logout", (req, res) => {
+    req.logout(req.user, err => {
+      if(err) return next(err);
+      res.redirect("/");
+    });
+  });
 
 // The root route with all the links to the other pages.
 app.get("/", function (req, res) {
@@ -463,24 +502,24 @@ app.get("/lezioni", function (req, res) {
 });
 
 // the same thing as /lezioni but for the teacher
-app.get("/registro_docente/:classe/lezioni", function (req, res) {
-  if (req.isAuthenticated() && req.user.teacher == true) {
-    Classroom.findOne({ id: req.params.classe }, (err, classe) => {
-      if (err) {
-        console.log(`Error: ` + err);
-      } else {
-        // sort by date in chronological order the lessons of classes
-        classe.lessons.sort((a, b) => (a.date > b.date ? 1 : -1));
-        res.render("lezioni_classe", {
-          classe: classe,
-          moment: moment,
-          linkRegistro: "",
-          displayName: req.user.name,
-        });
-      }
-    });
-  }
-});
+// app.get("/registro_docente/:classe/lezioni", function (req, res) {
+//   if (req.isAuthenticated() && req.user.teacher == true) {
+//     Classroom.findOne({ id: req.params.classe }, (err, classe) => {
+//       if (err) {
+//         console.log(`Error: ` + err);
+//       } else {
+//         // sort by date in chronological order the lessons of classes
+//         classe.lessons.sort((a, b) => (a.date > b.date ? 1 : -1));
+//         res.render("lezioni_classe", {
+//           classe: classe,
+//           moment: moment,
+//           linkRegistro: "",
+//           displayName: req.user.name,
+//         });
+//       }
+//     });
+//   }
+// });
 
 // this is the posto request fot the lessons, a teacher can add a lesson
 app.post("/registro_docente/:classe/lezioni", async function (req, res) {
