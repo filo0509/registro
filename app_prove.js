@@ -31,7 +31,7 @@ const moment = require("moment");
 const bcrypt = require("bcryptjs");
 const LocalStrategy = require("passport-local");
 const passportLocalMongoose = require("passport-local-mongoose");
-const passport = require("passport")
+const passport = require("passport");
 
 oneMonth = 1000 * 60 * 60 * 24 * 30;
 
@@ -149,8 +149,9 @@ const Grade = new mongoose.model("Grade", gradeSchema);
 const Classroom = new mongoose.model("Classroom", classroomSchema);
 const Admin = new mongoose.model("Admin", AdminSchema);
 const Lesson = new mongoose.model("Lesson", lessonSchema);
+const Subject = new mongoose.model("Subject", subjectSchema);
 const adminJs = new AdminJS({
-  resources: [User, Grade, Classroom],
+  resources: [User, Grade, Classroom, Subject, Lesson],
 });
 
 const router = AdminJSExpress.buildRouter(adminJs);
@@ -220,45 +221,51 @@ app.get(
   }
 );
 
-app.get("/register", function(req, res){
-    res.render("register");
+app.get("/register", function (req, res) {
+  res.render("register");
 });
 
 // handeling user sign up
-app.post("/register", function(req, res){
-    // console.log(req.body.username);
-    // console.log(req.body.password);
-    User.register(new User({username: req.body.username, name: req.body.name}),req.body.password, function(err, user){
-        if(err){
-            console.log(err);
-            return res.render("register");
-        }
-        passport.authenticate("local")(req, res, function(){
-            res.redirect("/");
-        });
-    });
+app.post("/register", function (req, res) {
+  // console.log(req.body.username);
+  // console.log(req.body.password);
+  User.register(
+    new User({ username: req.body.username, name: req.body.name }),
+    req.body.password,
+    function (err, user) {
+      if (err) {
+        console.log(err);
+        return res.render("register");
+      }
+      passport.authenticate("local")(req, res, function () {
+        res.redirect("/");
+      });
+    }
+  );
 });
 
 // Login Form
-app.get("/login", function(req, res){
-    res.render("login");
+app.get("/login", function (req, res) {
+  res.render("login");
 });
 
 // Login Logic
 // middleware
-app.post("/login", passport.authenticate("local",{
+app.post(
+  "/login",
+  passport.authenticate("local", {
     successRedirect: "/",
-    failureRedirect: "/login"
-}), function(req, res){
-    
-});
+    failureRedirect: "/login",
+  }),
+  function (req, res) {}
+);
 
 app.get("/logout", (req, res) => {
-    req.logout(req.user, err => {
-      if(err) return next(err);
-      res.redirect("/");
-    });
+  req.logout(req.user, (err) => {
+    if (err) return next(err);
+    res.redirect("/");
   });
+});
 
 // The root route with all the links to the other pages.
 app.get("/", function (req, res) {
@@ -298,7 +305,7 @@ app.get("/registro_docente", function (req, res) {
   if (req.isAuthenticated() && req.user.teacher == true) {
     Classroom.find(
       {
-        teachers: req.user.name,
+        teachers: req.user.id,
       },
       (err, doc) => {
         if (err) {
@@ -354,10 +361,20 @@ app.get("/registro_docente/:classe/medie", async function (req, res) {
           }
         }
 
+          
+        // ToDo control if the j and i index have the same control type
+        console.log(classi.subjects.length);
         var averageGrades = [];
         for (let i = 0; i < classi.subjects.length; i++) {
           averageGrades.push([]);
         }
+        for (let i = 0; i < classi.students.length; i++) {
+          for (let j = 0; j < classi.subjects.length; j++) {
+            averageGrades[i][j] = 0;
+            averageGrades[i][j] = 0;
+          }
+        }
+
         for (let i = 0; i < classi.students.length; i++) {
           for (let j = 0; j < classi.subjects.length; j++) {
             // round to 2 figures after the comma
@@ -404,6 +421,130 @@ app.get("/registro_docente/:classe/medie", async function (req, res) {
   } else {
     res.redirect("/");
   }
+});
+
+app.get("/aggiungi_utente", function (req, res) {
+  Classroom.find({}, (err, doc) => {
+    if (err) {
+      console.log(`Error: ` + err);
+    } else {
+      res.render("aggiungi_utente", {
+        classrooms: doc,
+      });
+    }
+  });
+});
+
+// Manca da aggiungere la classe
+app.post("/aggiungi_utente", function (req, res) {
+  const username = req.body.username;
+  const name = req.body.name;
+  const password = req.body.password;
+  const role = req.body.role;
+
+  if (role == 0) {
+    User.register(
+      new User({
+        username: req.body.username,
+        name: req.body.name,
+        studente: true,
+      }),
+      req.body.password,
+      function (err, user) {
+        if (err) {
+          console.log(err);
+          return res.render("aggiungi_utente");
+        }
+        passport.authenticate("local")(req, res, function () {
+          res.redirect("/");
+        });
+      }
+    );
+  } else if (role == 1) {
+    User.register(
+      new User({
+        username: req.body.username,
+        name: req.body.name,
+        docente: true,
+      }),
+      req.body.password,
+      function (err, user) {
+        if (err) {
+          console.log(err);
+          return res.render("aggiungi_utente");
+        }
+        passport.authenticate("local")(req, res, function () {
+          res.redirect("/");
+        });
+      }
+    );
+  }
+});
+
+app.post("/aggiungi_classe", function (req, res) {
+  const class_students = req.body.students;
+  const class_name = req.body.name;
+  const class_subjects = req.body.subjects;
+    const class_teachers = req.body.teachers;
+    
+    Subject.find({ _id: class_subjects }, (err, doc) => {
+        if (err) {
+          console.log(`Error: ` + err);
+        } else {
+            var classroom = new Classroom({
+                name: class_name,
+                students: class_students,
+                teachers: class_teachers,
+                subjects: doc,
+              });
+                
+                console.log(classroom)
+                
+                classroom.save()
+        }
+      });
+
+//   console.log(class_subjects.map(JSON.parse));
+
+//   class_subjects.map(JSON.parse);
+
+  res.redirect("/");
+});
+
+app.get("/aggiungi_classe", function (req, res) {
+  User.find(
+    {
+      docente: true,
+    },
+    (err, docenti) => {
+      if (err) {
+        console.log(`Error: ` + err);
+      } else {
+        Subject.find({}, (err, materie) => {
+          if (err) {
+            console.log(`Error: ` + err);
+          } else {
+            User.find(
+              {
+                studente: true,
+              },
+              (err, utenti) => {
+                if (err) {
+                  console.log(`Error: ` + err);
+                } else {
+                  res.render("aggiungi_classe", {
+                    students: utenti,
+                    subjects: materie,
+                    teachers: docenti,
+                  });
+                }
+              }
+            );
+          }
+        });
+      }
+    }
+  );
 });
 
 // the situation for a single student
@@ -502,24 +643,24 @@ app.get("/lezioni", function (req, res) {
 });
 
 // the same thing as /lezioni but for the teacher
-// app.get("/registro_docente/:classe/lezioni", function (req, res) {
-//   if (req.isAuthenticated() && req.user.teacher == true) {
-//     Classroom.findOne({ id: req.params.classe }, (err, classe) => {
-//       if (err) {
-//         console.log(`Error: ` + err);
-//       } else {
-//         // sort by date in chronological order the lessons of classes
-//         classe.lessons.sort((a, b) => (a.date > b.date ? 1 : -1));
-//         res.render("lezioni_classe", {
-//           classe: classe,
-//           moment: moment,
-//           linkRegistro: "",
-//           displayName: req.user.name,
-//         });
-//       }
-//     });
-//   }
-// });
+app.get("/registro_docente/:classe/lezioni", function (req, res) {
+  if (req.isAuthenticated() && req.user.teacher == true) {
+    Classroom.findOne({ id: req.params.classe }, (err, classe) => {
+      if (err) {
+        console.log(`Error: ` + err);
+      } else {
+        // sort by date in chronological order the lessons of classes
+        classe.lessons.sort((a, b) => (a.date > b.date ? 1 : -1));
+        res.render("lezioni_classe", {
+          classe: classe,
+          moment: moment,
+          linkRegistro: "",
+          displayName: req.user.name,
+        });
+      }
+    });
+  }
+});
 
 // this is the posto request fot the lessons, a teacher can add a lesson
 app.post("/registro_docente/:classe/lezioni", async function (req, res) {

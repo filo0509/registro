@@ -15,6 +15,7 @@
     "adminjs": "^6.8.6",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.0",
+    "bson": "^5.0.1",
     "chartjs-adapter-moment": "^1.0.0",
     "cookie-parser": "^1.4.6",
     "ejs": "^3.1.8",
