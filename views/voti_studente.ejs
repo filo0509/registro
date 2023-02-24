@@ -579,7 +579,7 @@
       </nav>
     </div>
   </header>
-
+ 
   <!-- ========== END HEADER ========== -->
 
   <!-- ========== MAIN CONTENT ========== -->
@@ -628,11 +628,11 @@
       <div class="js-shuffle row row-cols-1 row-cols-sm-2 row-cols-md-3">
         <% for( let i = 0; i < subjects.length; i++ ) { %>
             <% for( let j = 0; j < student.grades.length; j++ ) { %>
-                <% if (student.grades[j].subject == subjects[i].name) { %>
+                <% if (student.grades[j].subject == subjects[i]._id) { %>
                     <div class="js-shuffle-item col mb-5" data-groups='["<%= subjects[i].name %>"]'>
                         <!-- Card -->
                         <% if (student.grades[j].grade > 5) { %>
-                          <a class="card" href="#" style="background-color: rgba(0, 255, 179, 0.500);">
+                          <a class="card" href="#" style="background-color: rgba(0, 255, 98, 0.5);">
                             <div class="card-body">
                               <span class="card-subtitle text-body"><%= subjects[i].name %></span>
                               <h3 class="card-title"><%= student.grades[j].grade %></h3>
@@ -640,7 +640,7 @@
                           </a>
                         <% } %>
                         <% if (student.grades[j].grade  == 5) { %>
-                          <a class="card" href="#" style="background-color: rgba(255, 98, 0, 0.500);">
+                          <a class="card" href="#" style="background-color: rgba(255, 98, 0, 0.603);">
                             <div class="card-body">
                               <span class="card-subtitle text-body"><%= subjects[i].name %></span>
                               <h3 class="card-title"><%= student.grades[j].grade %></h3>
@@ -648,7 +648,7 @@
                           </a>
                         <% } %>
                         <% if(student.grades[j].grade < 5) { %>
-                          <a class="card" href="#" style="background-color: rgba(255, 0, 0, 0.500);">
+                          <a class="card" href="#" style="background-color: rgba(255, 0, 0, 0.543);">
                             <div class="card-body">
                               <span class="card-subtitle text-body"><%= subjects[i].name %></span>
                               <h3 class="card-title"><%= student.grades[j].grade %></h3>

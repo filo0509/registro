@@ -326,13 +326,14 @@ app.get("/registro_docente", function (req, res) {
 
 // Page where a teacher can see the overall situation of a single class
 // ToDo I have to cancel the average_grades from the DB because it ruins performance
-// ? lo avevo fatto ma github ha perso le modifiche
+// ToDo find why the grades are inverted
 app.get("/registro_docente/:classe/medie", async function (req, res) {
   if (req.isAuthenticated() && req.user.teacher == true) {
     Classroom.findOne({ _id: req.params.classe }, async (err, classi) => {
       if (err) {
         console.log(`Error: ` + err);
       } else {
+          classi.students.sort()
         // put in grades_average the average of the grades of the class based on the subject
         var sumGrades = [];
         var numGrades = [];
@@ -352,7 +353,7 @@ app.get("/registro_docente/:classe/medie", async function (req, res) {
             for (let k = 0; k < classi.grades.length; k++) {
               if (
                 classi.grades[k].student == classi.students[i] &&
-                classi.grades[k].subject == classi.subjects[j].name
+                classi.grades[k].subject == classi.subjects[j]._id
               ) {
                 sumGrades[i][j] += parseFloat(classi.grades[k].grade);
                 numGrades[i][j]++;
@@ -361,17 +362,12 @@ app.get("/registro_docente/:classe/medie", async function (req, res) {
           }
         }
 
-          
         // ToDo control if the j and i index have the same control type
-        console.log(classi.subjects.length);
         var averageGrades = [];
-        for (let i = 0; i < classi.subjects.length; i++) {
-          averageGrades.push([]);
-        }
         for (let i = 0; i < classi.students.length; i++) {
+          averageGrades.push([]);
           for (let j = 0; j < classi.subjects.length; j++) {
-            averageGrades[i][j] = 0;
-            averageGrades[i][j] = 0;
+            averageGrades[i].push([]);
           }
         }
 
@@ -386,7 +382,6 @@ app.get("/registro_docente/:classe/medie", async function (req, res) {
               averageGrades[i][j] = 0;
             }
           }
-          console.log(classi.students[i]);
         }
 
         for (var i = 0; i < classi.students.length; i++) {
@@ -413,7 +408,6 @@ app.get("/registro_docente/:classe/medie", async function (req, res) {
               linkRegistro: "",
               displayName: req.user.name,
             });
-            console.log(doc);
           }
         });
       }
@@ -486,27 +480,30 @@ app.post("/aggiungi_classe", function (req, res) {
   const class_name = req.body.name;
   const class_subjects = req.body.subjects;
     const class_teachers = req.body.teachers;
-    
-    Subject.find({ _id: class_subjects }, (err, doc) => {
-        if (err) {
-          console.log(`Error: ` + err);
-        } else {
-            var classroom = new Classroom({
-                name: class_name,
-                students: class_students,
-                teachers: class_teachers,
-                subjects: doc,
-              });
-                
-                console.log(classroom)
-                
-                classroom.save()
-        }
+
+    class_teachers.sort();
+    class_students.sort();
+
+  Subject.find({ _id: class_subjects }, (err, doc) => {
+    if (err) {
+      console.log(`Error: ` + err);
+    } else {
+      var classroom = new Classroom({
+        name: class_name,
+        students: class_students,
+        teachers: class_teachers,
+        subjects: doc,
       });
 
-//   console.log(class_subjects.map(JSON.parse));
+      console.log(classroom);
 
-//   class_subjects.map(JSON.parse);
+      classroom.save();
+    }
+  });
+
+  //   console.log(class_subjects.map(JSON.parse));
+
+  //   class_subjects.map(JSON.parse);
 
   res.redirect("/");
 });

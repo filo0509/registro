@@ -1695,7 +1695,7 @@
               var counter_gradient = 1
   
               '<% for( let j = 0; j < student.grades.length; j++ ) { %>'
-                '  <% if( student.grades[j].subject == subjects[i].name) { %>'
+                '  <% if( student.grades[j].subject == subjects[i]._id) { %>'
                     data.push('<%= student.grades[j].grade %>')
                     labels.push(moment(Date.parse('<%= student.grades[j].date %>')).format("MMMM Do"))
                   '<% } %>'

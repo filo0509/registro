@@ -39,7 +39,7 @@
                             <select name="selectstudente" class="form-control">
                                 <option value="" disabled selected>- Seleziona uno studente -</option>
                                 <% students.forEach(studente => { %>
-                                    <option id="studente" value="<%=studente.id%>"> <%=studente.name%> </option>
+                                    <option id="studente" value="<%=studente._id%>"> <%=studente.name%> </option>
                                 <% }); %>
                             </select>
                             <span class="invalid-feedback">Inserisci il nome dello studente</span>
@@ -52,7 +52,7 @@
                             <select name="selectmateria" class="form-control">
                                 <option value="" disabled selected>- Seleziona una materia -</option>
                                 <% classe.subjects.forEach(materia => { %>
-                                    <option id="materia" value="<%=materia.name%>"> <%=materia.name%> </option>
+                                    <option id="materia" value="<%=materia._id%>"> <%=materia.name%> </option>
                                 <% }); %>
                             </select>
                             <span class="invalid-feedback">Inserisci il nome della materia</span>

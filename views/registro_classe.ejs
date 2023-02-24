@@ -1220,7 +1220,7 @@
                   <tr>
                   <th scope="row"><a class="btn" href="medie/<%= students[i]._id %>"><%= students[i].name %></a></th>
                   <% for(var j = 0; j < subjects.length; j++) { %>
-                      <td><a class="btn" href="<%= students[i]._id %>/<%= subjects[j]._id %>"><%= averageGrades[i][j] %></a></td>
+                      <td><a class="btn" href="<%= students[i] %>/<%= subjects[j]._id %>"><%= averageGrades[i][j] %></a></td>
                   <% } %>
                   </tr>
               <% } %>
