@@ -835,6 +835,8 @@
     <script src="./assets/vendor/hs-show-animation/dist/hs-show-animation.min.js"></script>
     <script src="./assets/vendor/hs-go-to/dist/hs-go-to.min.js"></script>
     <script src="./assets/vendor/aos/dist/aos.js"></script>
+    <script src="./assets/vendor/prism/prism.js"></script>
+    <script src="../assets/vendor/list.js/dist/list.min.js"></script>
 
     <!-- JS Front -->
     <script src="./assets/js/theme.min.js"></script>
@@ -881,6 +883,24 @@
           duration: 650,
           once: true,
         });
+            // INITIALIZATION OF LISTJS COMPONENT
+            // =======================================================
+            HSCore.components.HSList.init('#snippetsSearch')
+            const snippetsSearch = HSCore.components.HSList.getItem('snippetsSearch')
+      
+      
+            // GET JSON FILE RESULTS
+            // =======================================================
+            fetch('./assets/json/snippets-search.json')
+            .then(response => response.json())
+            .then(data => {
+              snippetsSearch.add(data)
+            })
+      
+      
+            // INITIALIZATION OF GO TO
+            // =======================================================
+            new HSGoTo('.js-go-to')
       })();
     </script>
   </body>

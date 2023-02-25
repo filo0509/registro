@@ -9,7 +9,9 @@
  */
 
 // ToDO I have to mirror the situazione_studente of the teacher for the students
-// ToDO sistemare login e register
+// ToDO un docente può aggiungere voti solo per la sua materia
+// ! Allora: una materia contiene più professori e poi quando si aggiungono i professori si linkano automaticamente ad una materia
+// ToDo studiare come fare una searchbar
 
 // All the modules should imported here
 const express = require("express");
@@ -32,6 +34,7 @@ const bcrypt = require("bcryptjs");
 const LocalStrategy = require("passport-local");
 const passportLocalMongoose = require("passport-local-mongoose");
 const passport = require("passport");
+const fs = require("fs")
 
 oneMonth = 1000 * 60 * 60 * 24 * 30;
 
@@ -80,7 +83,7 @@ mongoose.connect(
 
 // This is the schema for the different subjects
 const subjectSchema = new mongoose.Schema({
-  teacher: String,
+  teachers: [String],
   name: String,
 });
 
@@ -207,42 +210,19 @@ passport.use(
   )
 );
 
-app.get(
-  "/auth/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
-);
+// app.get(
+//   "/auth/google",
+//   passport.authenticate("google", { scope: ["profile", "email"] })
+// );
 
-app.get(
-  "/auth/google/callback",
-  passport.authenticate("google", { failureRedirect: "/auth/google" }),
-  function (req, res) {
-    // Successful authentication, redirect home.
-    res.redirect("/");
-  }
-);
-
-app.get("/register", function (req, res) {
-  res.render("register");
-});
-
-// handeling user sign up
-app.post("/register", function (req, res) {
-  // console.log(req.body.username);
-  // console.log(req.body.password);
-  User.register(
-    new User({ username: req.body.username, name: req.body.name }),
-    req.body.password,
-    function (err, user) {
-      if (err) {
-        console.log(err);
-        return res.render("register");
-      }
-      passport.authenticate("local")(req, res, function () {
-        res.redirect("/");
-      });
-    }
-  );
-});
+// app.get(
+//   "/auth/google/callback",
+//   passport.authenticate("google", { failureRedirect: "/auth/google" }),
+//   function (req, res) {
+//     // Successful authentication, redirect home.
+//     res.redirect("/");
+//   }
+// );
 
 // Login Form
 app.get("/login", function (req, res) {
@@ -285,9 +265,27 @@ app.get("/", function (req, res) {
     });
   } else {
     res.render("index", {
-      linkRegistro: "/auth/google",
+      linkRegistro: "/login",
       displayName: req.user,
     });
+      
+    //   var students = []
+    //   var data;
+    //   User.find({ studente: true }, (err, doc) => {
+    //       for (var i = 0; i < doc.length; i++) {
+    //           console.log(doc[i].name)
+    //           students.push({
+    //               component: doc[i].name,
+    //               category: "Studente",
+    //               link: "/registro_docente/classe/medie/studente"
+    //           })
+    //       }
+    //       data = JSON.stringify(students)
+    //       console.log(data)
+    //   })
+    //   fs.writeFileSync("public/assets/json/snippets-search.json", data);
+      
+      
   }
 });
 
@@ -320,7 +318,7 @@ app.get("/registro_docente", function (req, res) {
       }
     );
   } else {
-    res.redirect("/auth/google");
+    res.redirect("/login");
   }
 });
 
@@ -333,7 +331,7 @@ app.get("/registro_docente/:classe/medie", async function (req, res) {
       if (err) {
         console.log(`Error: ` + err);
       } else {
-          classi.students.sort()
+        classi.students.sort();
         // put in grades_average the average of the grades of the class based on the subject
         var sumGrades = [];
         var numGrades = [];
@@ -396,6 +394,7 @@ app.get("/registro_docente/:classe/medie", async function (req, res) {
           );
         }
 
+        // ! The page is rendered before the averageGrades are updated
         User.find({ _id: classi.students }, (err, doc) => {
           if (err) {
             console.log(`Error: ` + err);
@@ -429,6 +428,30 @@ app.get("/aggiungi_utente", function (req, res) {
   });
 });
 
+app.get("/aggiungi_materia", function (req, res) {
+  User.find({ teacher: true }, (err, doc) => {
+    if (err) {
+      console.log(`Error: ` + err);
+    } else {
+      res.render("aggiungi_materia", {
+        teachers: doc,
+      });
+    }
+  });
+});
+
+app.post("/aggiungi_materia", function (req, res) {
+  const name = req.body.name;
+  const teachers = req.body.teacher;
+
+  Subject.create({
+    name: name,
+    teachers: teachers,
+  });
+
+  res.redirect("/");
+});
+
 // Manca da aggiungere la classe
 app.post("/aggiungi_utente", function (req, res) {
   const username = req.body.username;
@@ -459,7 +482,7 @@ app.post("/aggiungi_utente", function (req, res) {
       new User({
         username: req.body.username,
         name: req.body.name,
-        docente: true,
+        teacher: true,
       }),
       req.body.password,
       function (err, user) {
@@ -479,10 +502,7 @@ app.post("/aggiungi_classe", function (req, res) {
   const class_students = req.body.students;
   const class_name = req.body.name;
   const class_subjects = req.body.subjects;
-    const class_teachers = req.body.teachers;
-
-    class_teachers.sort();
-    class_students.sort();
+  const class_teachers = req.body.teachers;
 
   Subject.find({ _id: class_subjects }, (err, doc) => {
     if (err) {
@@ -761,7 +781,7 @@ app.get("/calendario", function (req, res) {
       }
     });
   } else {
-    res.redirect("/auth/google");
+    res.redirect("/login");
   }
 });
 
@@ -780,7 +800,7 @@ app.get("/registro_segretarie", function (req, res) {
       }
     });
   } else {
-    res.redirect("/auth/google");
+    res.redirect("/login");
   }
 });
 
