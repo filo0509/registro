@@ -33,9 +33,63 @@
 
     <!-- CSS Front Template -->
     <link rel="stylesheet" href="./assets/css/theme.min.css" />
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/instantsearch.css@8.0.0/themes/satellite-min.css"
+    integrity="sha256-p/rGN4RGy6EDumyxF9t7LKxWGg6/MZfGhJM/asKkqvA="
+    crossorigin="anonymous"
+  />
+  <link rel="stylesheet" href="./assets/css/style.css">
   </head>
 
   <body>
+
+    <% if (isLoggedIn) { %>
+     <!-- ========== Modal search ==========-->
+    <div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+          <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-close">
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- End Header -->
+      
+            <!-- Body -->
+            <div class="modal-body">
+              <!-- Log in -->
+              <div class="ais-InstantSearch">
+                  <center>
+                    <h1>Cerca uno studente</h1>
+                  </center>
+          
+                  <div class="right-panel">
+                    <div id="searchbox"></div>
+                    <div id="hits"></div>
+                    <div id="pagination"></div>
+                  </div>
+                </div>
+          
+                <div class="container">
+                  <div class="search-panel">
+                    <div class="search-panel__filters">
+                      <div id="dynamic-widgets"></div>
+                    </div>
+          
+                    <div class="search-panel__results">
+                      <div id="searchbox"></div>
+                      <div id="hits"></div>
+                      <div id="pagination"></div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <!-- End Body -->
+          </div>
+        </div>
+      </div>
+    <% } %>
+
     <!-- ========== HEADER ========== -->
     <header
       id="header"
@@ -45,7 +99,6 @@
             "fixEffect": "slide"
           }'
     >
-
       <div class="container">
         <nav class="js-mega-menu navbar-nav-wrap">
           <!-- Toggler -->
@@ -71,9 +124,8 @@
           <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <div class="navbar-absolute-top-scroller">
               <ul class="navbar-nav">
-
                 <%- include('partials/_navbar'); %>
-<!--
+                <!--
                 <li class="nav-item">
                   <button type="button" class="btn btn-primary btn-icon">
                       <i class="bi-person"></i>
@@ -88,11 +140,12 @@
         </nav>
       </div>
     </header>
-
     <!-- ========== END HEADER ========== -->
 
     <!-- ========== MAIN CONTENT ========== -->
     <main id="content" role="main">
+      <div id="hits"></div>
+      <div id="pagination"></div>
       <!-- Hero -->
       <div class="container overflow-hidden content-space-t-4">
         <div class="w-md-80 w-lg-50 text-center mx-md-auto mb-5 mb-md-9">
@@ -837,9 +890,12 @@
     <script src="./assets/vendor/aos/dist/aos.js"></script>
     <script src="./assets/vendor/prism/prism.js"></script>
     <script src="../assets/vendor/list.js/dist/list.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.10.5/dist/algoliasearch-lite.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.51.1"></script>
 
     <!-- JS Front -->
     <script src="./assets/js/theme.min.js"></script>
+    <script src="./assets/js/algolia.js"></script>
 
     <!-- JS Plugins Init. -->
     <script>
@@ -883,24 +939,23 @@
           duration: 650,
           once: true,
         });
-            // INITIALIZATION OF LISTJS COMPONENT
-            // =======================================================
-            HSCore.components.HSList.init('#snippetsSearch')
-            const snippetsSearch = HSCore.components.HSList.getItem('snippetsSearch')
-      
-      
-            // GET JSON FILE RESULTS
-            // =======================================================
-            fetch('./assets/json/snippets-search.json')
-            .then(response => response.json())
-            .then(data => {
-              snippetsSearch.add(data)
-            })
-      
-      
-            // INITIALIZATION OF GO TO
-            // =======================================================
-            new HSGoTo('.js-go-to')
+        // INITIALIZATION OF LISTJS COMPONENT
+        // =======================================================
+        HSCore.components.HSList.init("#snippetsSearch");
+        const snippetsSearch =
+          HSCore.components.HSList.getItem("snippetsSearch");
+
+        // GET JSON FILE RESULTS
+        // =======================================================
+        fetch("./assets/json/snippets-search.json")
+          .then((response) => response.json())
+          .then((data) => {
+            snippetsSearch.add(data);
+          });
+
+        // INITIALIZATION OF GO TO
+        // =======================================================
+        new HSGoTo(".js-go-to");
       })();
     </script>
   </body>

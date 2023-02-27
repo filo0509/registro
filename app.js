@@ -12,6 +12,8 @@
 // ToDO un docente può aggiungere voti solo per la sua materia
 // ! Allora: una materia contiene più professori e poi quando si aggiungono i professori si linkano automaticamente ad una materia
 // ToDo studiare come fare una searchbar
+// ToDo uno studente può essere associato solo ad una classe
+// ! Il radar chart non si aggiorna misteriosamente
 
 // All the modules should imported here
 const express = require("express");
@@ -34,7 +36,11 @@ const bcrypt = require("bcryptjs");
 const LocalStrategy = require("passport-local");
 const passportLocalMongoose = require("passport-local-mongoose");
 const passport = require("passport");
-const fs = require("fs")
+const fs = require("fs");
+const mongooseAlgolia = require("mongoose-algolia");
+
+// For the search bar
+const algoliasearch = require("algoliasearch");
 
 oneMonth = 1000 * 60 * 60 * 24 * 30;
 
@@ -114,6 +120,7 @@ const averageGradeSchema = new mongoose.Schema({
 
 // this is the schema of a single user (login with google)
 const userSchema = new mongoose.Schema({
+  classe: String,
   email: String,
   password: String,
   username: String,
@@ -143,8 +150,25 @@ const AdminSchema = new mongoose.Schema({
   password: String,
 });
 
+const client = algoliasearch("DZAA9FW8AU", "2f7ca52810e950f0281ff5e67d58d26e");
+const index = client.initIndex("registro_elettronico");
+
 userSchema.plugin(passportLocalMongoose);
 userSchema.plugin(findOrCreate);
+userSchema.plugin(mongooseAlgolia, {
+  appId: "DZAA9FW8AU",
+  apiKey: "2f7ca52810e950f0281ff5e67d58d26e",
+  indexName: "registro_elettronico", //The name of the index in Algolia, you can also pass in a function
+  selector: "-objectID", //You can decide which field that are getting synced to Algolia (same as selector in mongoose)
+  defaults: {
+    name: "unknown",
+    grades: "no  grades",
+  },
+  // filter: function(doc) {
+  //   return !doc.softdelete
+  // },
+  debug: true, // Default: false -> If true operations are logged out in your console
+});
 
 // Create the effective models in the DB
 const User = new mongoose.model("User", userSchema);
@@ -210,6 +234,34 @@ passport.use(
   )
 );
 
+function syncAlgolia() {
+  User.SyncToAlgolia(); //Clears the Algolia index for this schema and synchronizes all documents to Algolia (based on the settings defined in your plugin settings)
+  User.SetAlgoliaSettings({
+    searchableAttributes: ["name", "classe", "properties", "shows", "id"], //Sets the settings for this schema, see [Algolia's Index settings parameters](https://www.algolia.com/doc/api-client/javascript/settings#set-settings) for more info.
+  });
+}
+
+// syncAlgolia()
+
+// const actors = [
+//   {
+//     name: "Tom Cruise",
+//     rating: 1200,
+//   },
+//   {
+//     name: "Brad Pitt",
+//     rating: 1000,
+//   },
+// ];
+
+// index
+//   .saveObjects(actors, { autoGenerateObjectIDIfNotExist: true })
+//   .then(({ objectIDs }) => {
+//     console.log(objectIDs);
+//   })
+//   .catch(err => {
+//     console.log(err);
+//   });
 // app.get(
 //   "/auth/google",
 //   passport.authenticate("google", { scope: ["profile", "email"] })
@@ -253,22 +305,25 @@ app.get("/", function (req, res) {
     User.findOne({ _id: req.session.passport.user }, function (err, profile) {
       res.render("index", {
         linkRegistro: "/registro_docente",
-        displayName: profile.name,
+          displayName: profile.name,
+          isLoggedIn: true,
       });
     });
   } else if (req.isAuthenticated()) {
     User.findOne({ _id: req.session.passport.user }, function (err, profile) {
       res.render("index", {
         linkRegistro: "/registro_studente",
-        displayName: profile.name,
+          displayName: profile.name,
+          isLoggedIn: false,
       });
     });
   } else {
     res.render("index", {
       linkRegistro: "/login",
-      displayName: req.user,
+        displayName: req.user,
+        isLoggedIn: false,
     });
-      
+
     //   var students = []
     //   var data;
     //   User.find({ studente: true }, (err, doc) => {
@@ -284,8 +339,6 @@ app.get("/", function (req, res) {
     //       console.log(data)
     //   })
     //   fs.writeFileSync("public/assets/json/snippets-search.json", data);
-      
-      
   }
 });
 
@@ -417,27 +470,75 @@ app.get("/registro_docente/:classe/medie", async function (req, res) {
 });
 
 app.get("/aggiungi_utente", function (req, res) {
-  Classroom.find({}, (err, doc) => {
-    if (err) {
-      console.log(`Error: ` + err);
-    } else {
-      res.render("aggiungi_utente", {
-        classrooms: doc,
-      });
-    }
-  });
+  if (req.isAuthenticated() && req.user.segretario === true) {
+    Classroom.find({}, (err, doc) => {
+      if (err) {
+        console.log(`Error: ` + err);
+      } else {
+        res.render("aggiungi_utente", {
+          classrooms: doc,
+        });
+      }
+    });
+  } else {
+    res.redirect("/login");
+  }
 });
 
 app.get("/aggiungi_materia", function (req, res) {
-  User.find({ teacher: true }, (err, doc) => {
-    if (err) {
-      console.log(`Error: ` + err);
-    } else {
-      res.render("aggiungi_materia", {
-        teachers: doc,
-      });
-    }
-  });
+  if (req.isAuthenticated() && req.user.segretario === true) {
+    User.find({ teacher: true }, (err, doc) => {
+      if (err) {
+        console.log(`Error: ` + err);
+      } else {
+        res.render("aggiungi_materia", {
+          teachers: doc,
+        });
+      }
+    });
+  } else {
+    res.redirect("/login");
+  }
+});
+
+app.get("/aggiungi_classe", function (req, res) {
+  if (req.isAuthenticated() && req.user.segretario === true) {
+    User.find(
+      {
+        docente: true,
+      },
+      (err, docenti) => {
+        if (err) {
+          console.log(`Error: ` + err);
+        } else {
+          Subject.find({}, (err, materie) => {
+            if (err) {
+              console.log(`Error: ` + err);
+            } else {
+              User.find(
+                {
+                  studente: true,
+                },
+                (err, utenti) => {
+                  if (err) {
+                    console.log(`Error: ` + err);
+                  } else {
+                    res.render("aggiungi_classe", {
+                      students: utenti,
+                      subjects: materie,
+                      teachers: docenti,
+                    });
+                  }
+                }
+              );
+            }
+          });
+        }
+      }
+    );
+  } else {
+    res.redirect("/login");
+  }
 });
 
 app.post("/aggiungi_materia", function (req, res) {
@@ -515,55 +616,25 @@ app.post("/aggiungi_classe", function (req, res) {
         subjects: doc,
       });
 
-      console.log(classroom);
-
       classroom.save();
+      User.updateMany(
+        { _id: class_students },
+        { classe: classroom._id },
+        function (err, docs) {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log("Updated Docs : ", docs);
+          }
+        }
+      );
     }
   });
-
-  //   console.log(class_subjects.map(JSON.parse));
-
-  //   class_subjects.map(JSON.parse);
 
   res.redirect("/");
 });
 
-app.get("/aggiungi_classe", function (req, res) {
-  User.find(
-    {
-      docente: true,
-    },
-    (err, docenti) => {
-      if (err) {
-        console.log(`Error: ` + err);
-      } else {
-        Subject.find({}, (err, materie) => {
-          if (err) {
-            console.log(`Error: ` + err);
-          } else {
-            User.find(
-              {
-                studente: true,
-              },
-              (err, utenti) => {
-                if (err) {
-                  console.log(`Error: ` + err);
-                } else {
-                  res.render("aggiungi_classe", {
-                    students: utenti,
-                    subjects: materie,
-                    teachers: docenti,
-                  });
-                }
-              }
-            );
-          }
-        });
-      }
-    }
-  );
-});
-
+// per la search bar devo aggiungere un field classe per ogni studente
 // the situation for a single student
 app.get("/registro_docente/:classe/medie/:studente", async function (req, res) {
   User.findById(req.params.studente, (err, doc) => {
@@ -632,7 +703,7 @@ app.post("/registro_docente/:classe/medie", async function (req, res) {
       }
     );
 
-    res.redirect(`/registro_docente/${classe}/medie/${studente}`);
+    res.redirect(`/registro_docente/${classe}/medie`);
   }
 });
 
@@ -744,6 +815,7 @@ app.get("/voti_studente", function (req, res) {
         console.log(`Error: ` + err);
       } else {
         Classroom.findOne({ students: doc._id }, (err, classe) => {
+          console.log(classe);
           res.render("voti_studente", {
             student: doc,
             subjects: classe.subjects,

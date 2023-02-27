@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- CSS Implementing Plugins -->
+    <link
+      rel="stylesheet"
+      href="./assets/vendor/bootstrap-icons/font/bootstrap-icons.css"
+    />
+    <link
+      rel="stylesheet"
+      href="./assets/vendor/hs-mega-menu/dist/hs-mega-menu.min.css"
+    />
+    <link rel="stylesheet" href="./assets/vendor/aos/dist/aos.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/instantsearch.css@8.0.0/themes/satellite-min.css"
+      integrity="sha256-p/rGN4RGy6EDumyxF9t7LKxWGg6/MZfGhJM/asKkqvA="
+      crossorigin="anonymous"
+    />
+
+    <!-- CSS Front Template -->
+    <link rel="stylesheet" href="./assets/css/theme.min.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#signupModal">Sign up modal</button>
+
+<!-- Modal -->
+<div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <!-- Header -->
+      <div class="modal-close">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <!-- End Header -->
+
+      <!-- Body -->
+      <div class="modal-body">
+        <!-- Log in -->
+        <div class="ais-InstantSearch">
+            <center>
+              <h1>Cerca uno studente</h1>
+            </center>
+    
+            <div class="right-panel">
+              <div id="searchbox"></div>
+              <div id="hits"></div>
+              <div id="pagination"></div>
+            </div>
+          </div>
+    
+          <div class="container">
+            <div class="search-panel">
+              <div class="search-panel__filters">
+                <div id="dynamic-widgets"></div>
+              </div>
+    
+              <div class="search-panel__results">
+                <div id="searchbox"></div>
+                <div id="hits"></div>
+                <div id="pagination"></div>
+              </div>
+            </div>
+          </div>
+      </div>
+      <!-- End Body -->
+    </div>
+  </div>
+</div>
+<!-- End Modal -->
+    <div class="container" style="margin-top: 1rem;">
+      
+    </div>
+
+    <script src="./assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- JS Implementing Plugins -->
+    <script src="./assets/vendor/hs-header/dist/hs-header.min.js"></script>
+    <script src="./assets/vendor/hs-mega-menu/dist/hs-mega-menu.min.js"></script>
+    <script src="./assets/vendor/hs-show-animation/dist/hs-show-animation.min.js"></script>
+    <script src="./assets/vendor/hs-go-to/dist/hs-go-to.min.js"></script>
+    <script src="./assets/vendor/aos/dist/aos.js"></script>
+    <script src="./assets/vendor/prism/prism.js"></script>
+    <script src="../assets/vendor/list.js/dist/list.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.10.5/dist/algoliasearch-lite.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.51.1"></script>
+
+    <!-- JS Front -->
+    <script src="./assets/js/theme.min.js"></script>
+    <script src="./assets/js/algolia.js"></script>
+  </body>
+</html>
