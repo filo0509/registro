@@ -14,6 +14,7 @@
 // ToDo studiare come fare una searchbar
 // ToDo uno studente può essere associato solo ad una classe
 // ! Il radar chart non si aggiorna misteriosamente
+// ! Da sistemare la creazione di nuove classi, non devono esserci doppioni e più studenti in diverse classi
 
 // All the modules should imported here
 const express = require("express");
@@ -155,6 +156,7 @@ const index = client.initIndex("registro_elettronico");
 
 userSchema.plugin(passportLocalMongoose);
 userSchema.plugin(findOrCreate);
+subjectSchema.plugin(findOrCreate);
 userSchema.plugin(mongooseAlgolia, {
   appId: "DZAA9FW8AU",
   apiKey: "2f7ca52810e950f0281ff5e67d58d26e",
@@ -241,27 +243,9 @@ function syncAlgolia() {
   });
 }
 
+// ! Va usata questa funzione ogni volta che si modifica il database
 // syncAlgolia()
 
-// const actors = [
-//   {
-//     name: "Tom Cruise",
-//     rating: 1200,
-//   },
-//   {
-//     name: "Brad Pitt",
-//     rating: 1000,
-//   },
-// ];
-
-// index
-//   .saveObjects(actors, { autoGenerateObjectIDIfNotExist: true })
-//   .then(({ objectIDs }) => {
-//     console.log(objectIDs);
-//   })
-//   .catch(err => {
-//     console.log(err);
-//   });
 // app.get(
 //   "/auth/google",
 //   passport.authenticate("google", { scope: ["profile", "email"] })
@@ -305,23 +289,23 @@ app.get("/", function (req, res) {
     User.findOne({ _id: req.session.passport.user }, function (err, profile) {
       res.render("index", {
         linkRegistro: "/registro_docente",
-          displayName: profile.name,
-          isLoggedIn: true,
+        displayName: profile.name,
+        isLoggedIn: true,
       });
     });
   } else if (req.isAuthenticated()) {
     User.findOne({ _id: req.session.passport.user }, function (err, profile) {
       res.render("index", {
         linkRegistro: "/registro_studente",
-          displayName: profile.name,
-          isLoggedIn: false,
+        displayName: profile.name,
+        isLoggedIn: false,
       });
     });
   } else {
     res.render("index", {
       linkRegistro: "/login",
-        displayName: req.user,
-        isLoggedIn: false,
+      displayName: req.user,
+      isLoggedIn: false,
     });
 
     //   var students = []
@@ -505,7 +489,7 @@ app.get("/aggiungi_classe", function (req, res) {
   if (req.isAuthenticated() && req.user.segretario === true) {
     User.find(
       {
-        docente: true,
+        teacher: true,
       },
       (err, docenti) => {
         if (err) {
@@ -518,6 +502,7 @@ app.get("/aggiungi_classe", function (req, res) {
               User.find(
                 {
                   studente: true,
+                  classe: null,
                 },
                 (err, utenti) => {
                   if (err) {
@@ -545,10 +530,17 @@ app.post("/aggiungi_materia", function (req, res) {
   const name = req.body.name;
   const teachers = req.body.teacher;
 
-  Subject.create({
-    name: name,
-    teachers: teachers,
-  });
+  Subject.findOrCreate(
+    {
+      name: name,
+      teachers: teachers,
+    },
+    function (err, subject) {
+      subject.name = name;
+      subject.teachers = teachers;
+      subject.save();
+    }
+  );
 
   res.redirect("/");
 });
@@ -560,43 +552,49 @@ app.post("/aggiungi_utente", function (req, res) {
   const password = req.body.password;
   const role = req.body.role;
 
-  if (role == 0) {
-    User.register(
-      new User({
-        username: req.body.username,
-        name: req.body.name,
-        studente: true,
-      }),
-      req.body.password,
-      function (err, user) {
-        if (err) {
-          console.log(err);
-          return res.render("aggiungi_utente");
-        }
-        passport.authenticate("local")(req, res, function () {
-          res.redirect("/");
-        });
+  User.findOne({ name: name, username: username }, (err, doc) => {
+    if (!doc) {
+      if (role == 0) {
+        User.register(
+          new User({
+            username: req.body.username,
+            name: req.body.name,
+            studente: true,
+          }),
+          req.body.password,
+          function (err, user) {
+            if (err) {
+              console.log(err);
+              return res.render("aggiungi_utente");
+            }
+            passport.authenticate("local")(req, res, function () {
+              res.redirect("/");
+            });
+          }
+        );
+      } else if (role == 1) {
+        User.register(
+          new User({
+            username: req.body.username,
+            name: req.body.name,
+            teacher: true,
+          }),
+          req.body.password,
+          function (err, user) {
+            if (err) {
+              console.log(err);
+              return res.render("aggiungi_utente");
+            }
+            passport.authenticate("local")(req, res, function () {
+              res.redirect("/");
+            });
+          }
+        );
       }
-    );
-  } else if (role == 1) {
-    User.register(
-      new User({
-        username: req.body.username,
-        name: req.body.name,
-        teacher: true,
-      }),
-      req.body.password,
-      function (err, user) {
-        if (err) {
-          console.log(err);
-          return res.render("aggiungi_utente");
-        }
-        passport.authenticate("local")(req, res, function () {
-          res.redirect("/");
-        });
-      }
-    );
-  }
+    } else {
+      res.redirect("/");
+    }
+  });
 });
 
 app.post("/aggiungi_classe", function (req, res) {
@@ -643,7 +641,8 @@ app.get("/registro_docente/:classe/medie/:studente", async function (req, res) {
     if (err) {
       console.log(`Error: ` + err);
     } else {
-      Classroom.findById(req.params.classe, (err, classe) => {
+        Classroom.findById(req.params.classe, (err, classe) => {
+        // ToDo un professore può aggiungere voti solo per la sua/e materia/e
         console.log(classe);
         res.render("situazione_studente", {
           subjects: classe.subjects,

@@ -94,3 +94,7 @@ html {
 .ais-Hits {
     text-align: center !important;
 }
+
+.home-card {
+    box-shadow: 0.6rem 0.6rem  #377dff57;
+}
