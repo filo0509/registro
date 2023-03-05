@@ -243,6 +243,8 @@ function syncAlgolia() {
   });
 }
 
+// ! possibilità di aggiungere studenti salvati su file csv
+
 // ! Va usata questa funzione ogni volta che si modifica il database
 // syncAlgolia()
 
@@ -601,7 +603,10 @@ app.post("/aggiungi_classe", function (req, res) {
   const class_students = req.body.students;
   const class_name = req.body.name;
   const class_subjects = req.body.subjects;
-  const class_teachers = req.body.teachers;
+    const class_teachers = req.body.teachers;
+    
+    // Bisogna ordinare in base al nome, non all'id
+    class_students.sort();
 
   Subject.find({ _id: class_subjects }, (err, doc) => {
     if (err) {
@@ -641,7 +646,7 @@ app.get("/registro_docente/:classe/medie/:studente", async function (req, res) {
     if (err) {
       console.log(`Error: ` + err);
     } else {
-        Classroom.findById(req.params.classe, (err, classe) => {
+      Classroom.findById(req.params.classe, (err, classe) => {
         // ToDo un professore può aggiungere voti solo per la sua/e materia/e
         console.log(classe);
         res.render("situazione_studente", {
@@ -708,7 +713,7 @@ app.post("/registro_docente/:classe/medie", async function (req, res) {
 
 // the list of the "lectures" for the students
 app.get("/lezioni", function (req, res) {
-  if (req.isAuthenticated()) {
+  if (req.isAuthenticated() && req.user.studente == true) {
     Classroom.findOne(
       { students: req.session.passport.user },
       (err, classe) => {
@@ -726,6 +731,8 @@ app.get("/lezioni", function (req, res) {
         }
       }
     );
+  } else {
+      res.redirect("/")
   }
 });
 
@@ -832,20 +839,22 @@ app.get("/voti_studente", function (req, res) {
 // ToDo !!!!
 app.get("/calendario", function (req, res) {
   if (req.isAuthenticated()) {
-    User.findOne({ _id: req.session.passport.user }, function (err, doc) {
+    User.findOne({ _id: req.session.passport.user }, function (err, studente) {
       if (err) {
         console.log(`Error: ` + err);
       } else {
-        Classroom.findOne({ students: doc._id }, (err, classe) => {
+          Classroom.findOne({ students: studente._id }, (err, classe) => {
+            // le sorto in base all'ora di firma
           classe.lessons.sort((a, b) =>
             a.date + a.ora >= b.date + b.ora ? 1 : -1
           );
+            
+              // ? devo aggiungere i voti nel calendario, con un link che rimandi a /voti_studente
+            console.log(studente.grades)
           res.render("calendario", {
-            student: doc,
+            student: studente,
             lessons: classe.lessons,
             subjects: classe.subjects,
-            moment: moment,
-            linkRegistro: "",
             displayName: req.user.name,
           });
         });
@@ -873,6 +882,11 @@ app.get("/registro_segretarie", function (req, res) {
   } else {
     res.redirect("/login");
   }
+});
+
+// ! questo deve restare per ultimo
+app.use(function(req, res, next){
+    res.status(404).send("<center><h1>Errore 404, pagina non trovata</h1></center>");
 });
 
 // !Start the server

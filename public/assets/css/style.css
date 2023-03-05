@@ -96,5 +96,6 @@ html {
 }
 
 .home-card {
-    box-shadow: 0.6rem 0.6rem  #377dff57;
+    box-shadow: 0.6rem 0.6rem  #377dff;
+    border-radius: 2rem;
 }
