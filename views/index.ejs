@@ -34,105 +34,124 @@
     <!-- CSS Front Template -->
     <link rel="stylesheet" href="./assets/css/theme.min.css" />
     <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/instantsearch.css@8.0.0/themes/satellite-min.css"
-    integrity="sha256-p/rGN4RGy6EDumyxF9t7LKxWGg6/MZfGhJM/asKkqvA="
-    crossorigin="anonymous"
-  />
-  <link rel="stylesheet" href="./assets/css/style.css">
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/instantsearch.css@8.0.0/themes/satellite-min.css"
+      integrity="sha256-p/rGN4RGy6EDumyxF9t7LKxWGg6/MZfGhJM/asKkqvA="
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
   </head>
 
   <body>
-
-    <% if (isLoggedIn) { %>
-     <!-- ========== Modal search ==========-->
-    <div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-          <div class="modal-content">
-            <!-- Header -->
-            <div class="modal-close">
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <!-- End Header -->
-      
-            <!-- Body -->
-            <div class="modal-body">
-              <!-- Log in -->
-              <div class="ais-InstantSearch">
-                  <center>
-                    <h1>Cerca uno studente</h1>
-                  </center>
-          
-                  <div class="right-panel">
-                    <div id="searchbox"></div>
-                    <div id="hits"></div>
-                    <div id="pagination"></div>
-                  </div>
-                </div>
-          
-                <div class="container">
-                  <div class="search-panel">
-                    <div class="search-panel__filters">
-                      <div id="dynamic-widgets"></div>
-                    </div>
-          
-                    <div class="search-panel__results">
-                      <div id="searchbox"></div>
-                      <div id="hits"></div>
-                      <div id="pagination"></div>
-                    </div>
-                  </div>
-                </div>
-            </div>
-            <!-- End Body -->
+    <%- include('partials/_spinner.ejs') %> <% if (isLoggedIn) { %>
+    <!-- ========== Modal search ==========-->
+    <div
+      class="modal fade"
+      id="signupModal"
+      tabindex="-1"
+      role="dialog"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+        role="document"
+      >
+        <div class="modal-content">
+          <!-- Header -->
+          <div class="modal-close">
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
+          <!-- End Header -->
+
+          <!-- Body -->
+          <div class="modal-body">
+            <!-- Log in -->
+            <div class="ais-InstantSearch">
+              <center>
+                <h1>Cerca uno studente</h1>
+              </center>
+
+              <div class="right-panel">
+                <div id="searchbox"></div>
+                <div id="hits"></div>
+                <div id="pagination"></div>
+              </div>
+            </div>
+
+            <div class="container">
+              <div class="search-panel">
+                <div class="search-panel__filters">
+                  <div id="dynamic-widgets"></div>
+                </div>
+
+                <div class="search-panel__results">
+                  <div id="searchbox"></div>
+                  <div id="hits"></div>
+                  <div id="pagination"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End Body -->
         </div>
       </div>
+    </div>
     <% } %>
 
     <!-- ========== HEADER ========== -->
     <header
       id="header"
-      style="margin: 1rem; border-radius: 1rem; box-shadow: 0rem 0rem 2rem 0.5rem rgba(0, 47, 255, 0.099);"
-      class="navbar navbar-floating navbar-expand-lg navbar-end navbar-light navbar-show-hide"
-      data-hs-header-options='{
-            "fixMoment": 1000,
-            "fixEffect": "fade"
-          }'
+      class="navbar navbar-expand-lg navbar-floating navbar-end navbar-light shadow-sm"
+      data-aos="zoom-in-left"
     >
       <div class="container">
         <nav class="js-mega-menu navbar-nav-wrap">
-          <!-- Toggler -->
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNavDropdown"
-            aria-controls="navbarNavDropdown"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-default">
-              <i class="bi-list"></i>
-            </span>
-            <span class="navbar-toggler-toggled">
-              <i class="bi-x"></i>
-            </span>
-          </button>
-          <!-- End Toggler -->
+          <!-- Default Logo -->
+          <a class="navbar-brand" href="/" aria-label="Front">
+            <img
+              class="navbar-brand-logo"
+              src="./assets/svg/logos/logo.svg"
+              alt="Logo"
+            />
+          </a>
+          <!-- End Default Logo -->
 
           <!-- Collapse -->
           <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <div class="navbar-absolute-top-scroller">
               <ul class="navbar-nav">
-                <%- include('partials/_navbar'); %>
-                <!--
                 <li class="nav-item">
-                  <button type="button" class="btn btn-primary btn-icon">
-                      <i class="bi-person"></i>
+                  <a class="btn btn-soft-primary btn-transition" href="\logout"
+                    >Logout</a
+                  >
+                </li>
+                <!-- Button -->
+                <li class="nav-item">
+                  <a class="btn btn-soft-primary btn-transition" href="/login"
+                    >Login</a
+                  >
+                </li>
+                <% if (isLoggedIn) { %>
+                <li class="nav-item">
+                  <button
+                    style="border-radius: 1rem"
+                    type="button"
+                    class="btn btn-primary btn-transition"
+                    data-bs-toggle="modal"
+                    data-bs-target="#signupModal"
+                  >
+                    Cerca
                   </button>
                 </li>
--->
+
+                <% } %>
+
                 <!-- End Button -->
               </ul>
             </div>
@@ -150,16 +169,16 @@
       <!-- Hero -->
       <div class="container overflow-hidden content-space-t-4">
         <div class="w-md-80 w-lg-50 text-center mx-md-auto mb-5 mb-md-9">
-          <h1 class="display-4 mb-3">Registro elettronico</h1>
-          <p class="lead">Istituto Don Carlo Gnocchi</p>
+          <h1 data-aos="zoom-in-left" class="display-4 mb-3">Registro elettronico</h1>
+          <p data-aos="zoom-in-right" class="lead">Istituto Don Carlo Gnocchi</p>
         </div>
         <%- include('partials/_nav_index.ejs'); %>
       </div>
       <!-- End Hero -->
     </main>
     <!-- ========== END MAIN CONTENT ========== -->
-    <br>
-    <br>
+    <br />
+    <br />
 
     <!-- ========== FOOTER ========== -->
     <%- include('partials/_footer.ejs') %>
@@ -642,10 +661,13 @@
     <script src="../assets/vendor/list.js/dist/list.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.10.5/dist/algoliasearch-lite.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.51.1"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
     <!-- JS Front -->
     <script src="./assets/js/theme.min.js"></script>
     <script src="./assets/js/algolia.js"></script>
+    <script src="./assets/js/main.js"></script>
 
     <!-- JS Plugins Init. -->
     <script>
@@ -707,6 +729,30 @@
         // =======================================================
         new HSGoTo(".js-go-to");
       })();
+    </script>
+    <script>
+      // You can also pass an optional settings object
+      // below listed default settings
+      AOS.init({
+        // Global settings:
+        disable: false, // accepts following values: 'phone', 'tablet', 'mobile', boolean, expression or function
+        startEvent: "DOMContentLoaded", // name of the event dispatched on the document, that AOS should initialize on
+        initClassName: "aos-init", // class applied after initialization
+        animatedClassName: "aos-animate", // class applied on animation
+        useClassNames: false, // if true, will add content of `data-aos` as classes on scroll
+        disableMutationObserver: false, // disables automatic mutations' detections (advanced)
+        debounceDelay: 50, // the delay on debounce used while resizing window (advanced)
+        throttleDelay: 99, // the delay on throttle used while scrolling the page (advanced)
+
+        // Settings that can be overridden on per-element basis, by `data-aos-*` attributes:
+        offset: 120, // offset (in px) from the original trigger point
+        delay: 0, // values from 0 to 3000, with step 50ms
+        duration: 700, // values from 0 to 3000, with step 50ms
+        easing: "ease", // default easing for AOS animations
+        once: false, // whether animation should happen only once - while scrolling down
+        mirror: false, // whether elements should animate out while scrolling past them
+        anchorPlacement: "top-bottom", // defines which position of the element regarding to window should trigger the animation
+      });
     </script>
   </body>
 </html>

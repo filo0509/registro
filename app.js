@@ -603,10 +603,10 @@ app.post("/aggiungi_classe", function (req, res) {
   const class_students = req.body.students;
   const class_name = req.body.name;
   const class_subjects = req.body.subjects;
-    const class_teachers = req.body.teachers;
-    
-    // Bisogna ordinare in base al nome, non all'id
-    class_students.sort();
+  const class_teachers = req.body.teachers;
+
+  // Bisogna ordinare in base al nome, non all'id
+  class_students.sort();
 
   Subject.find({ _id: class_subjects }, (err, doc) => {
     if (err) {
@@ -732,7 +732,7 @@ app.get("/lezioni", function (req, res) {
       }
     );
   } else {
-      res.redirect("/")
+    res.redirect("/");
   }
 });
 
@@ -843,14 +843,14 @@ app.get("/calendario", function (req, res) {
       if (err) {
         console.log(`Error: ` + err);
       } else {
-          Classroom.findOne({ students: studente._id }, (err, classe) => {
-            // le sorto in base all'ora di firma
+        Classroom.findOne({ students: studente._id }, (err, classe) => {
+          // le sorto in base all'ora di firma
           classe.lessons.sort((a, b) =>
             a.date + a.ora >= b.date + b.ora ? 1 : -1
           );
-            
-              // ? devo aggiungere i voti nel calendario, con un link che rimandi a /voti_studente
-            console.log(studente.grades)
+
+          // ? devo aggiungere i voti nel calendario, con un link che rimandi a /voti_studente
+          console.log(studente.grades);
           res.render("calendario", {
             student: studente,
             lessons: classe.lessons,
@@ -885,8 +885,10 @@ app.get("/registro_segretarie", function (req, res) {
 });
 
 // ! questo deve restare per ultimo
-app.use(function(req, res, next){
-    res.status(404).send("<center><h1>Errore 404, pagina non trovata</h1></center>");
+app.use(function (req, res, next) {
+  res
+    .status(404)
+    .send("<center><h1>Errore 404, pagina non trovata</h1></center>");
 });
 
 // !Start the server

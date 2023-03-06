@@ -33,10 +33,11 @@
 
     <!-- CSS Front Template -->
     <link rel="stylesheet" href="/../assets/css/theme.min.css" />
-    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="/../assets/css/style.css">
   </head>
 
   <body>
+    <%- include('partials/_spinner.ejs') %>
     <%- include("partials/_aggiungi_voto.ejs") %>
     <%- include("partials/_aggiungi_lezione.ejs") %>
 
@@ -439,9 +440,11 @@
     <script src="/../assets/vendor/hs-show-animation/dist/hs-show-animation.min.js"></script>
     <script src="/../assets/vendor/hs-go-to/dist/hs-go-to.min.js"></script>
     <script src="/../assets/vendor/aos/dist/aos.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 
     <!-- JS Front -->
     <script src="/../assets/js/theme.min.js"></script>
+    <script src="/../assets/js/main.js"></script>
 
     <!-- JS Plugins Init. -->
     <script>

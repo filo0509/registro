@@ -98,4 +98,21 @@ html {
 .home-card {
     box-shadow: 0.6rem 0.6rem  #377dff;
     border-radius: 2rem;
+    box-shadow: .1rem black;
+}
+
+.loader-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    background: #ffffff;
+    z-index: 100;
+}
+
+.navbar {
+    margin: 1rem !important;
+    border-radius: 1rem !important;
 }
