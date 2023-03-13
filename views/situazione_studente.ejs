@@ -87,6 +87,10 @@
       </div>
     </header>
 
+    <div id="dark-mode-container" class="form-switch text-center my-5">
+        <input type="checkbox" id="mode" class="form-check-input">
+      </div>
+
     <!-- ========== END HEADER ========== -->
     <br />
     <br />
@@ -527,8 +531,9 @@
             scale: {
               beginAtZero: true,
               min: 0,
-              max: 10
-            }
+              max: 10,
+
+            },
           }
         });
       </script>
@@ -620,7 +625,18 @@
                         beginAtZero: true,
                         suggestedMin: 0,
                         suggestedMax: 10,
+                        display: true,
+                          grid: {
+                            color: "#83aeff4d",
+                          },
                     },
+                    x: {
+                        display: true,
+                        grid: {
+                          color: "#83aeff4d",
+                        },
+                      },
+
 
                     
                 }
