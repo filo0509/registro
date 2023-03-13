@@ -6,7 +6,7 @@
  *registro_docente/:classe/media/:studente/:materia -> voti di uno studente in una materia
  *registro_docente/:classe/media/:studente          -> voti di uno studente
  *registro_docente/:classe/media/:materia           -> voti materia
- */
+*/
 
 // ToDO I have to mirror the situazione_studente of the teacher for the students
 // ToDO un docente può aggiungere voti solo per la sua materia
