@@ -83,15 +83,15 @@
                     <div class="js-shuffle-item col mb-5" data-groups='["<%= subjects[i].name %>"]'>
                         <!-- Card -->
                         <% if (student.grades[j].grade > 5) { %>
-                          <a class="card" href="#" style="background-color: rgba(0, 255, 13, 1);">
+                          <a class="card" href="#" style="background-color: var(--bs-color-grade-success);">
                             <div class="card-body">
                               <span class="card-subtitle text-body"><%= subjects[i].name %></span>
                               <h3 class="card-title"><%= student.grades[j].grade %></h3>
                             </div>
                           </a>
                         <% } %>
-                        <% if (student.grades[j].grade  == 5) { %>
-                          <a class="card" href="#" style="background-color: rgba(255, 98, 0, 1);">
+                        <% if (student.grades[j].grade == 5) { %>
+                          <a class="card" href="#" style="background-color: var(--bs-color-grade-danger);">
                             <div class="card-body">
                               <span class="card-subtitle text-body"><%= subjects[i].name %></span>
                               <h3 class="card-title"><%= student.grades[j].grade %></h3>
@@ -99,7 +99,7 @@
                           </a>
                         <% } %>
                         <% if(student.grades[j].grade < 5) { %>
-                          <a class="card" href="#" style="background-color: rgba(255, 0, 0, 1);">
+                          <a class="card" href="#" style="background-color: var(--bs-color-grade-insufficent);">
                             <div class="card-body">
                               <span class="card-subtitle text-body"><%= subjects[i].name %></span>
                               <h3 class="card-title"><%= student.grades[j].grade %></h3>

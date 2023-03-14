@@ -71,6 +71,9 @@
   --bs-button-soft-bg: #83aeff4d;
   --bs-button-soft-fg: #377dff;
   --bs-button-primary-hover: #37acff;
+  --bs-color-grade-success: rgba(9, 210, 9, 0.717);
+  --bs-color-grade-danger: rgba(255, 89, 0, 0.722);
+  --bs-color-grade-insufficent: rgba(255, 0, 0, 0.789);
 }
 *,
 ::after,
@@ -149,6 +152,9 @@
   --bs-button-soft-bg: #262f7c;
   --bs-button-soft-fg: #e7e9ff;
   --bs-button-primary-hover: #091050;
+  --bs-color-grade-success: rgba(10, 200, 127, 0.721);
+  --bs-color-grade-danger: rgba(231, 76, 24, 0.667);
+  --bs-color-grade-insufficent: rgba(255, 0, 55, 0.707);
 }
 *,
 ::after,
@@ -156,7 +162,7 @@
   box-sizing: border-box;
 }
 
-body {
+body, html {
   margin: 0;
   font-family: var(--bs-body-font-family);
   font-size: var(--bs-body-font-size);
@@ -4135,7 +4141,7 @@ fieldset:disabled .btn {
 .nav-pills .nav-link {
   background: 0 0;
   border: 0;
-  border-radius: 0.5rem;
+  border-radius: 1rem !important;
 }
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
@@ -4752,6 +4758,7 @@ fieldset:disabled .btn {
 .card-subtitle {
   margin-top: -0.125rem;
   margin-bottom: 0;
+  color: var(--bs-gray-100) !important;
 }
 .card-text:last-child {
   margin-bottom: 0;
@@ -8234,7 +8241,7 @@ fieldset:disabled .btn {
 }
 .text-body {
   --bs-text-opacity: 1;
-  color: rgba(var(--bs-body-color-rgb), var(--bs-text-opacity)) !important;
+  color: var(--bs-gray-300) !important;
 }
 .text-muted {
   --bs-text-opacity: 1;
@@ -19802,7 +19809,7 @@ label.form-control {
 }
 .nav-segment {
   position: relative;
-  background-color: #f8fafd;
+  background-color: var(--bs-body-bg);
   padding: 0.25rem 0.25rem;
   border-radius: 0.5rem;
 }
@@ -24584,7 +24591,7 @@ a:hover .text-inherit {
 .hs-nav-scroller-horizontal .hs-nav-scroller-arrow-prev {
   left: 0;
   margin-left: -0.125rem;
-  background-image: linear-gradient(to right, var(--bs-color-white) 50%, transparent 100%);
+  background-image: linear-gradient(to right, var(--bs-body-bg) 50%, transparent 100%);
 }
 .hs-nav-scroller-horizontal
   .hs-nav-scroller-arrow-prev
@@ -24594,7 +24601,7 @@ a:hover .text-inherit {
 .hs-nav-scroller-horizontal .hs-nav-scroller-arrow-next {
   right: 0;
   margin-right: -0.125rem;
-  background-image: linear-gradient(to right, transparent 0, var(--bs-color-white) 50%);
+  background-image: linear-gradient(to right, transparent 0, var(--bs-body-bg) 50%);
 }
 .hs-nav-scroller-horizontal
   .hs-nav-scroller-arrow-next

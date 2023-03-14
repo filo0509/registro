@@ -1,4 +1,7 @@
 {
+    "engines": {
+        "node": ">=15 <16"
+      },
   "name": "registro_nodejs",
   "version": "1.0.0",
   "description": "A little website that handles the grades of the students",
