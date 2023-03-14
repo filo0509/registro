@@ -146,6 +146,7 @@
   --bs-navbar-shadow: #4b75ff60;
   --bs-color-white: #ffffff;
   --bs-title-color: #ffffff;
+  --bs-title-color-rgb: 255, 255, 255;
   --bs-link-color: #ffffff;
   --bs-link-color-hover: #00c9a7;
   --bs-button-ghost-bg: #ffffff;
@@ -247,6 +248,7 @@ h6 {
 p {
   margin-top: 0;
   margin-bottom: 1rem;
+  color: rgba(var(--bs-title-color-rgb), 0.78) !important;
 }
 abbr[data-bs-original-title],
 abbr[title] {
@@ -25491,10 +25493,6 @@ a:hover .text-inherit {
 
 /* Customization */
 
-.ais-SearchBox {
-  margin: 1em 0;
-}
-
 body,
 html {
   margin: 0;
@@ -25551,4 +25549,9 @@ html {
     right: 0rem;
     margin-bottom: 1rem;
     margin-right: 1rem;
+}
+
+#docsSearch-input {
+    background-color: var(--bs-body-bg) !important;
+    color: var(--bs-title-color);
 }

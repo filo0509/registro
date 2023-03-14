@@ -817,7 +817,7 @@ app.get("/voti_studente", function (req, res) {
 
 // ToDo !!!!
 app.get("/calendario", function (req, res) {
-  if (req.isAuthenticated()) {
+  if (req.isAuthenticated() && req.user.studente == true) {
     User.findOne({ _id: req.session.passport.user }, function (err, studente) {
       if (err) {
         console.log(`Error: ` + err);

@@ -80,20 +80,6 @@
                     >Login</a
                   >
                 </li>
-                <% if (isLoggedIn) { %>
-                <li class="nav-item">
-                  <button
-                    style="border-radius: 1rem"
-                    type="button"
-                    class="btn btn-primary btn-transition"
-                    data-bs-toggle="modal"
-                    data-bs-target="#signupModal"
-                  >
-                    Cerca
-                  </button>
-                </li>
-
-                <% } %>
 
                 <!-- End Button -->
               </ul>
@@ -117,7 +103,7 @@
                       <i class="bi-search"></i>
                     </div>
 
-                    <input type="search" class="search form-control form-control-sm" placeholder="Search in docs" aria-label="Search in docs">
+                    <input type="search" id="docsSearch-input" class="search form-control form-control-sm" placeholder="Search in docs" aria-label="Search in docs">
 
                     <a class="input-group-append input-group-text" href="javascript:;">
                       <i id="clearSearchResultsIcon" class="bi-x" style="display: none;"></i>
