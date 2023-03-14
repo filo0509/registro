@@ -15,6 +15,7 @@
 // ToDo uno studente può essere associato solo ad una classe
 // ! Il radar chart non si aggiorna misteriosamente
 // ! Da sistemare la creazione di nuove classi, non devono esserci doppioni e più studenti in diverse classi
+// ! Sistemare la vista mobile, soprattutto il calendario, navbar e homepage. C'è un problema col login nel registro studente
 
 // All the modules should imported here
 const express = require("express");

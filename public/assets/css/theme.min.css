@@ -70,7 +70,7 @@
   --bs-button-ghost-bg: #ffffff;
   --bs-button-soft-bg: #83aeff4d;
   --bs-button-soft-fg: #377dff;
-  --bs-button-primary-hover: #37acff;
+  --bs-button-primary-hover: #374bff;
   --bs-color-grade-success: rgba(9, 210, 9, 0.717);
   --bs-color-grade-danger: rgba(255, 89, 0, 0.722);
   --bs-color-grade-insufficent: rgba(255, 0, 0, 0.789);
@@ -2301,14 +2301,14 @@ progress {
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
-  color: #1e2022;
-  background-color: var(--bs-color-white);
+  color: var(--bs-title-color);
+  background-color: var(--bs-body-bg);
   background-clip: padding-box;
   border: 0.0625rem solid rgba(33, 50, 91, 0.1);
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  border-radius: 1rem;
+  border-radius: 1rem !important;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 @media (prefers-reduced-motion: reduce) {
@@ -4186,6 +4186,7 @@ fieldset:disabled .btn {
   justify-content: space-between;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+  background-color: var(--bs-body-bg) !important;
 }
 .navbar > .container,
 .navbar > .container-fluid,
@@ -5781,6 +5782,7 @@ fieldset:disabled .btn {
   -ms-flex: 1 1 auto;
   flex: 1 1 auto;
   padding: 2rem;
+  background-color: var(--bs-body-bg) !important;
 }
 .modal-footer {
   display: -ms-flexbox;
