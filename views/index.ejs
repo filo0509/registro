@@ -38,19 +38,23 @@
       integrity="sha256-p/rGN4RGy6EDumyxF9t7LKxWGg6/MZfGhJM/asKkqvA="
       crossorigin="anonymous"
     />
-    
+
     <link rel="stylesheet" href="./assets/css/theme.min.css" />
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
-    <link rel="stylesheet" href="../assets/css/docs.min.css">
+    <link rel="stylesheet" href="../assets/css/docs.min.css" />
   </head>
 
   <body>
-    <%- include('partials/_spinner.ejs') %> 
+    <%- include('partials/_spinner.ejs') %>
 
     <!-- ========== HEADER ========== -->
     <header
       id="header"
-      class="navbar navbar-expand-lg navbar-floating navbar-end navbar-light shadow-sm"
+      class="navbar navbar-expand-lg navbar-end navbar-absolute-top navbar-light navbar-show-hide"
+      data-hs-header-options='{
+            "fixMoment": 1000,
+            "fixEffect": "slide"
+          }'
       data-aos="zoom-in-left"
     >
       <div class="container">
@@ -65,78 +69,45 @@
           </a>
           <!-- End Default Logo -->
 
+          <!-- Toggler -->
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-default">
+              <i class="bi-list"></i>
+            </span>
+            <span class="navbar-toggler-toggled">
+              <i class="bi-x"></i>
+            </span>
+          </button>
+          <!-- End Toggler -->
+
           <!-- Collapse -->
           <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <div class="navbar-absolute-top-scroller">
               <ul class="navbar-nav">
+                <!-- Button -->
                 <li class="nav-item">
-                  <a class="btn btn-soft-primary btn-transition" href="\logout"
+                  <a class="btn btn-primary btn-transition" href="/logout"
                     >Logout</a
                   >
                 </li>
+                <!-- End Button -->
+
                 <!-- Button -->
                 <li class="nav-item">
                   <a class="btn btn-soft-primary btn-transition" href="/login"
                     >Login</a
                   >
                 </li>
-
                 <!-- End Button -->
               </ul>
-            </div>
-          </div>
-          <div class="col-md px-lg-0">
-            <div class="d-flex justify-content-between align-items-center px-lg-5 px-xl-10">
-              <div class="d-none d-md-block">
-                <!-- Search Form -->
-                <form id="docsSearch" class="position-relative"
-                data-hs-list-options='{
-                    "searchMenu": true,
-                    "keyboard": true,
-                    "item": "searchTemplate",
-                    "valueNames": ["component", "category", {"name": "link", "attr": "href"}],
-                    "empty": "#searchNoResults"
-                  }'>
-                  <!-- Input Group -->
-                  <div class="input-group input-group-merge navbar-input-group">
-                    <div class="input-group-prepend input-group-text">
-                      <i class="bi-search"></i>
-                    </div>
-
-                    <input type="search" id="docsSearch-input" class="search form-control form-control-sm" placeholder="Search in docs" aria-label="Search in docs">
-
-                    <a class="input-group-append input-group-text" href="javascript:;">
-                      <i id="clearSearchResultsIcon" class="bi-x" style="display: none;"></i>
-                    </a>
-                  </div>
-                  <!-- End Input Group -->
-
-                  <!-- List -->
-                  <div class="list dropdown-menu navbar-dropdown-menu-borderless w-100 overflow-auto" style="max-height: 16rem;"></div>
-                  <!-- End List -->
-
-                  <!-- Empty -->
-                  <div id="searchNoResults" style="display: none;">
-                    <div class="text-center p-4">
-                      <img class="mb-3" src="../assets/svg/illustrations/oc-error.svg" alt="Image Description" style="width: 10rem;">
-                      <p class="mb-0">No Results</p>
-                    </div>
-                  </div>
-                  <!-- End Empty -->
-                </form>
-                <!-- End Search Form -->
-
-                <!-- List Item Template -->
-                <div class="d-none">
-                  <div id="searchTemplate" class="dropdown-item">
-                    <a class="d-block link" href="#">
-                      <span class="category d-block fw-normal text-muted mb-1"></span>
-                      <span class="component text-dark"></span>
-                    </a>
-                  </div>
-                </div>
-                <!-- End List Item Template -->
-              </div>
             </div>
           </div>
           <!-- End Collapse -->
@@ -146,8 +117,8 @@
     <!-- ========== END HEADER ========== -->
 
     <div id="dark-mode-container" class="form-switch text-center my-5">
-        <input type="checkbox" id="mode" class="form-check-input">
-      </div>
+      <input type="checkbox" id="mode" class="form-check-input" />
+    </div>
 
     <!-- ========== MAIN CONTENT ========== -->
     <main id="content" role="main">
@@ -238,37 +209,40 @@
         // INITIALIZATION OF LISTJS COMPONENT
         // =======================================================
         HSCore.components.HSList.init("#docsSearch");
-        const snippetsSearch =
-          HSCore.components.HSList.getItem("docsSearch");
+        const snippetsSearch = HSCore.components.HSList.getItem("docsSearch");
 
         // GET JSON FILE RESULTS
         // =======================================================
 
         // Add students to searchbar
-        var studente = {}
-        var students = []
-        '<% for( let i = 0; i < studenti.length; i++ ) { %>'
-            studente = {
-                component: '<%= studenti[i].name %>',
-                category: '<%= studenti[i].username %>',
-                link: "/registro_docente/" + '<%= studenti[i].classe %>' + "/medie/" + '<%= studenti[i]._id %>'
-            }
-            students.push(studente)
-        '<% } %>'
-        console.log(students)
+        var studente = {};
+        var students = [];
+        ("<% for( let i = 0; i < studenti.length; i++ ) { %>");
+        studente = {
+          component: "<%= studenti[i].name %>",
+          category: "<%= studenti[i].username %>",
+          link:
+            "/registro_docente/" +
+            "<%= studenti[i].classe %>" +
+            "/medie/" +
+            "<%= studenti[i]._id %>",
+        };
+        students.push(studente);
+        ("<% } %>");
+        console.log(students);
         snippetsSearch.add(students);
 
         // Add classes
-        var classe = {}
-        var classrooms = []
-        '<% for( let i = 0; i < classi.length; i++ ) { %>'
-            classe = {
-                component: '<%= classi[i].name %>',
-                category: "Classe",
-                link: "/registro_docente/" + '<%= classi[i]._id %>' + "/medie"
-            }
-            classrooms.push(classe)
-        '<% } %>'
+        var classe = {};
+        var classrooms = [];
+        ("<% for( let i = 0; i < classi.length; i++ ) { %>");
+        classe = {
+          component: "<%= classi[i].name %>",
+          category: "Classe",
+          link: "/registro_docente/" + "<%= classi[i]._id %>" + "/medie",
+        };
+        classrooms.push(classe);
+        ("<% } %>");
         snippetsSearch.add(classrooms);
 
         // INITIALIZATION OF GO TO
