@@ -41,68 +41,11 @@
     
     <link rel="stylesheet" href="./assets/css/theme.min.css" />
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/css/docs.min.css">
   </head>
 
   <body>
-    <%- include('partials/_spinner.ejs') %> <% if (isLoggedIn) { %>
-    <!-- ========== Modal search ==========-->
-    <div
-      class="modal fade"
-      id="signupModal"
-      tabindex="-1"
-      role="dialog"
-      aria-hidden="true"
-    >
-      <div
-        class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
-        role="document"
-      >
-        <div class="modal-content">
-          <!-- Header -->
-          <div class="modal-close">
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <!-- End Header -->
-
-          <!-- Body -->
-          <div class="modal-body">
-            <!-- Log in -->
-            <div class="ais-InstantSearch">
-              <center>
-                <h1>Cerca uno studente</h1>
-              </center>
-
-              <div class="right-panel">
-                <div id="searchbox"></div>
-                <div id="hits"></div>
-                <div id="pagination"></div>
-              </div>
-            </div>
-
-            <div class="container">
-              <div class="search-panel">
-                <div class="search-panel__filters">
-                  <div id="dynamic-widgets"></div>
-                </div>
-
-                <div class="search-panel__results">
-                  <div id="searchbox"></div>
-                  <div id="hits"></div>
-                  <div id="pagination"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- End Body -->
-        </div>
-      </div>
-    </div>
-    <% } %>
+    <%- include('partials/_spinner.ejs') %> 
 
     <!-- ========== HEADER ========== -->
     <header
@@ -154,6 +97,60 @@
 
                 <!-- End Button -->
               </ul>
+            </div>
+          </div>
+          <div class="col-md px-lg-0">
+            <div class="d-flex justify-content-between align-items-center px-lg-5 px-xl-10">
+              <div class="d-none d-md-block">
+                <!-- Search Form -->
+                <form id="docsSearch" class="position-relative"
+                data-hs-list-options='{
+                    "searchMenu": true,
+                    "keyboard": true,
+                    "item": "searchTemplate",
+                    "valueNames": ["component", "category", {"name": "link", "attr": "href"}],
+                    "empty": "#searchNoResults"
+                  }'>
+                  <!-- Input Group -->
+                  <div class="input-group input-group-merge navbar-input-group">
+                    <div class="input-group-prepend input-group-text">
+                      <i class="bi-search"></i>
+                    </div>
+
+                    <input type="search" class="search form-control form-control-sm" placeholder="Search in docs" aria-label="Search in docs">
+
+                    <a class="input-group-append input-group-text" href="javascript:;">
+                      <i id="clearSearchResultsIcon" class="bi-x" style="display: none;"></i>
+                    </a>
+                  </div>
+                  <!-- End Input Group -->
+
+                  <!-- List -->
+                  <div class="list dropdown-menu navbar-dropdown-menu-borderless w-100 overflow-auto" style="max-height: 16rem;"></div>
+                  <!-- End List -->
+
+                  <!-- Empty -->
+                  <div id="searchNoResults" style="display: none;">
+                    <div class="text-center p-4">
+                      <img class="mb-3" src="../assets/svg/illustrations/oc-error.svg" alt="Image Description" style="width: 10rem;">
+                      <p class="mb-0">No Results</p>
+                    </div>
+                  </div>
+                  <!-- End Empty -->
+                </form>
+                <!-- End Search Form -->
+
+                <!-- List Item Template -->
+                <div class="d-none">
+                  <div id="searchTemplate" class="dropdown-item">
+                    <a class="d-block link" href="#">
+                      <span class="category d-block fw-normal text-muted mb-1"></span>
+                      <span class="component text-dark"></span>
+                    </a>
+                  </div>
+                </div>
+                <!-- End List Item Template -->
+              </div>
             </div>
           </div>
           <!-- End Collapse -->
@@ -720,17 +717,39 @@
         });
         // INITIALIZATION OF LISTJS COMPONENT
         // =======================================================
-        HSCore.components.HSList.init("#snippetsSearch");
+        HSCore.components.HSList.init("#docsSearch");
         const snippetsSearch =
-          HSCore.components.HSList.getItem("snippetsSearch");
+          HSCore.components.HSList.getItem("docsSearch");
 
         // GET JSON FILE RESULTS
         // =======================================================
-        fetch("./assets/json/snippets-search.json")
-          .then((response) => response.json())
-          .then((data) => {
-            snippetsSearch.add(data);
-          });
+
+        // Add students to searchbar
+        var studente = {}
+        var students = []
+        '<% for( let i = 0; i < studenti.length; i++ ) { %>'
+            studente = {
+                component: '<%= studenti[i].name %>',
+                category: '<%= studenti[i].username %>',
+                link: "/registro_docente/" + '<%= studenti[i].classe %>' + "/medie/" + '<%= studenti[i]._id %>'
+            }
+            students.push(studente)
+        '<% } %>'
+        console.log(students)
+        snippetsSearch.add(students);
+
+        // Add classes
+        var classe = {}
+        var classrooms = []
+        '<% for( let i = 0; i < classi.length; i++ ) { %>'
+            classe = {
+                component: '<%= classi[i].name %>',
+                category: "Classe",
+                link: "/registro_docente/" + '<%= classi[i]._id %>' + "/medie"
+            }
+            classrooms.push(classe)
+        '<% } %>'
+        snippetsSearch.add(classrooms);
 
         // INITIALIZATION OF GO TO
         // =======================================================

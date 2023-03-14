@@ -6,7 +6,7 @@
  *registro_docente/:classe/media/:studente/:materia -> voti di uno studente in una materia
  *registro_docente/:classe/media/:studente          -> voti di uno studente
  *registro_docente/:classe/media/:materia           -> voti materia
-*/
+ */
 
 // ToDO I have to mirror the situazione_studente of the teacher for the students
 // ToDO un docente può aggiungere voti solo per la sua materia
@@ -37,11 +37,6 @@ const bcrypt = require("bcryptjs");
 const LocalStrategy = require("passport-local");
 const passportLocalMongoose = require("passport-local-mongoose");
 const passport = require("passport");
-const fs = require("fs");
-const mongooseAlgolia = require("mongoose-algolia");
-
-// For the search bar
-const algoliasearch = require("algoliasearch");
 
 oneMonth = 1000 * 60 * 60 * 24 * 30;
 
@@ -151,26 +146,9 @@ const AdminSchema = new mongoose.Schema({
   password: String,
 });
 
-const client = algoliasearch("DZAA9FW8AU", "2f7ca52810e950f0281ff5e67d58d26e");
-const index = client.initIndex("registro_elettronico");
-
 userSchema.plugin(passportLocalMongoose);
 userSchema.plugin(findOrCreate);
 subjectSchema.plugin(findOrCreate);
-userSchema.plugin(mongooseAlgolia, {
-  appId: "DZAA9FW8AU",
-  apiKey: "2f7ca52810e950f0281ff5e67d58d26e",
-  indexName: "registro_elettronico", //The name of the index in Algolia, you can also pass in a function
-  selector: "-objectID", //You can decide which field that are getting synced to Algolia (same as selector in mongoose)
-  defaults: {
-    name: "unknown",
-    grades: "no  grades",
-  },
-  // filter: function(doc) {
-  //   return !doc.softdelete
-  // },
-  debug: true, // Default: false -> If true operations are logged out in your console
-});
 
 // Create the effective models in the DB
 const User = new mongoose.model("User", userSchema);
@@ -236,18 +214,6 @@ passport.use(
   )
 );
 
-function syncAlgolia() {
-  User.SyncToAlgolia(); //Clears the Algolia index for this schema and synchronizes all documents to Algolia (based on the settings defined in your plugin settings)
-  User.SetAlgoliaSettings({
-    searchableAttributes: ["name", "classe", "properties", "shows", "id"], //Sets the settings for this schema, see [Algolia's Index settings parameters](https://www.algolia.com/doc/api-client/javascript/settings#set-settings) for more info.
-  });
-}
-
-// ! possibilità di aggiungere studenti salvati su file csv
-
-// ! Va usata questa funzione ogni volta che si modifica il database
-// syncAlgolia()
-
 // app.get(
 //   "/auth/google",
 //   passport.authenticate("google", { scope: ["profile", "email"] })
@@ -288,11 +254,20 @@ app.get("/logout", (req, res) => {
 // The root route with all the links to the other pages.
 app.get("/", function (req, res) {
   if (req.isAuthenticated() && req.user.teacher == true) {
-    User.findOne({ _id: req.session.passport.user }, function (err, profile) {
-      res.render("index", {
-        linkRegistro: "/registro_docente",
-        displayName: profile.name,
-        isLoggedIn: true,
+    Classroom.find({}, (err, classi) => {
+      User.find({ studente: true }, (err, students) => {
+        User.findOne(
+          { _id: req.session.passport.user },
+          function (err, profile) {
+            res.render("index", {
+              linkRegistro: "/registro_docente",
+              displayName: profile.name,
+              isLoggedIn: true,
+                studenti: students,
+                classi: classi,
+            });
+          }
+        );
       });
     });
   } else if (req.isAuthenticated()) {
@@ -301,6 +276,8 @@ app.get("/", function (req, res) {
         linkRegistro: "/registro_studente",
         displayName: profile.name,
         isLoggedIn: false,
+          studenti: "",
+          classi: "",
       });
     });
   } else {
@@ -308,6 +285,8 @@ app.get("/", function (req, res) {
       linkRegistro: "/login",
       displayName: req.user,
       isLoggedIn: false,
+        studenti: "",
+        classi: "",
     });
 
     //   var students = []

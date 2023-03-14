@@ -25495,26 +25495,6 @@ html {
   font-family: "Golos Text", sans-serif !important;
 }
 
-.ais-SearchBox-form {
-  accent-color: var(--bs-blue);
-  color: var(--bs-blue);
-}
-.ais-SearchBox-input {
-  border-radius: 1rem;
-  accent-color: var(--bs-blue);
-  color: var(--bs-blue);
-}
-
-.ais-Hits-item {
-  margin: 1rem;
-  border-radius: 1rem !important;
-  text-align: center !important;
-}
-
-.ais-Hits {
-  text-align: center !important;
-}
-
 .home-card {
   box-shadow: 0.6rem 0.6rem var(--bs-blue);
   border-radius: 2rem;
@@ -25528,7 +25508,7 @@ html {
   justify-content: center;
   align-items: center;
   position: fixed;
-  background: var(--bs-color-white);
+  background: var(--bs-body-bg);
   z-index: 100;
 }
 

@@ -29,6 +29,10 @@
   <%- include('partials/_navbar.ejs') %>
   <!-- ========== END HEADER ========== -->
 
+  <div id="dark-mode-container" class="form-switch text-center my-5">
+    <input type="checkbox" id="mode" class="form-check-input">
+  </div>
+
   <!-- ========== MAIN CONTENT ========== -->
   <main id="content" role="main">
     <div class="container content-space-t-3 content-space-t-lg-5 content-space-b-2 content-space-b-lg-3">
@@ -79,7 +83,7 @@
                     <div class="js-shuffle-item col mb-5" data-groups='["<%= subjects[i].name %>"]'>
                         <!-- Card -->
                         <% if (student.grades[j].grade > 5) { %>
-                          <a class="card" href="#" style="background-color: rgba(0, 255, 13, 0.5);">
+                          <a class="card" href="#" style="background-color: rgba(0, 255, 13, 1);">
                             <div class="card-body">
                               <span class="card-subtitle text-body"><%= subjects[i].name %></span>
                               <h3 class="card-title"><%= student.grades[j].grade %></h3>
@@ -87,7 +91,7 @@
                           </a>
                         <% } %>
                         <% if (student.grades[j].grade  == 5) { %>
-                          <a class="card" href="#" style="background-color: rgba(255, 98, 0, 0.603);">
+                          <a class="card" href="#" style="background-color: rgba(255, 98, 0, 1);">
                             <div class="card-body">
                               <span class="card-subtitle text-body"><%= subjects[i].name %></span>
                               <h3 class="card-title"><%= student.grades[j].grade %></h3>
@@ -95,7 +99,7 @@
                           </a>
                         <% } %>
                         <% if(student.grades[j].grade < 5) { %>
-                          <a class="card" href="#" style="background-color: rgba(255, 0, 0, 0.543);">
+                          <a class="card" href="#" style="background-color: rgba(255, 0, 0, 1);">
                             <div class="card-body">
                               <span class="card-subtitle text-body"><%= subjects[i].name %></span>
                               <h3 class="card-title"><%= student.grades[j].grade %></h3>

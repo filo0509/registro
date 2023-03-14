@@ -53,7 +53,7 @@
       <div class="container">
         <nav class="js-mega-menu navbar-nav-wrap">
           <!-- Default Logo -->
-          <a class="navbar-brand" href="/../index.html" aria-label="Front">
+          <a class="navbar-brand" href="/" aria-label="Front">
             <img
               class="navbar-brand-logo"
               src="/../assets/svg/logos/logo.svg"
@@ -140,7 +140,7 @@
             <tbody>
               <% for(var i = 0; i < students.length; i++){ %>
                   <tr>
-                  <th scope="row"><a class="btn" href="medie/<%= students[i]._id %>"><%= students[i].name %></a></th>
+                  <th scope="row"><a class="btn" href="<%= students[i]._id %>"><%= students[i].name %></a></th>
                   <% for(var j = 0; j < subjects.length; j++) { %>
                     <% if (averageGrades[i][j] > 6) { %>
                         <td> <center><a class="btn btn-success" href="<%= students[i] %>/<%= subjects[j]._id %>"><%= averageGrades[i][j] %></a></center> </td>
