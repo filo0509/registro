@@ -32,12 +32,12 @@
     <link rel="stylesheet" href="/../assets/vendor/aos/dist/aos.css" />
 
     <!-- CSS Front Template -->
-    <link rel="stylesheet" href="/../assets/css/theme.min.css" />
     <link
       rel="stylesheet"
       href="/../assets/vendor/chart.js/dist/Chart.min.css"
     />
     <link rel="stylesheet" href="/../assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/theme.min.css" />
   </head>
 
   <body>
@@ -507,8 +507,7 @@
                 width = chartWidth;
                 height = chartHeight;
                 gradient1 = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-                gradient1.addColorStop(0, "#f5424e");
-                gradient1.addColorStop(0.5, "#f5424e");
+                gradient1.addColorStop(0.2, "#f5424e");
                 gradient1.addColorStop(1,"#42f551");
             }
 
@@ -523,9 +522,8 @@
                 width = chartWidth;
                 height = chartHeight;
                 gradient2 = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-                gradient2.addColorStop(0, "#f5424e44");
-                gradient2.addColorStop(0.5, "#e6ae4044");
-                gradient2.addColorStop(1,"#42f55144");
+                gradient2.addColorStop(0.2, "#f5424e44");
+                gradient2.addColorStop(1,"#42f55141");
             }
     
             return gradient2;

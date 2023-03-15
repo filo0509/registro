@@ -39,46 +39,7 @@
   <body>
     <%- include('partials/_spinner.ejs') %>
     <!-- ========== HEADER ========== -->
-    <header
-      id="header"
-      class="navbar navbar-expand-lg navbar-floating navbar-end navbar-light shadow-sm"
-      data-aos="zoom-in-left"
-    >
-      <div class="container">
-        <nav class="js-mega-menu navbar-nav-wrap">
-          <!-- Default Logo -->
-          <a class="navbar-brand" href="/" aria-label="Front">
-            <img
-              class="navbar-brand-logo"
-              src="./assets/svg/logos/logo.svg"
-              alt="Logo"
-            />
-          </a>
-          <!-- End Default Logo -->
-
-          <!-- Collapse -->
-          <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <div class="navbar-absolute-top-scroller">
-              <ul class="navbar-nav">
-                <li class="nav-item">
-                  <a class="btn btn-soft-primary btn-transition" href="\logout"
-                    >Logout</a
-                  >
-                </li>
-                <!-- Button -->
-                <li class="nav-item">
-                  <a class="btn btn-soft-primary btn-transition" href="/login"
-                    >Login</a
-                  >
-                </li>
-                <!-- End Button -->
-              </ul>
-            </div>
-          </div>
-          <!-- End Collapse -->
-        </nav>
-      </div>
-    </header>
+    <%- include('partials/_navbar.ejs') %>
 
     <div id="dark-mode-container" class="form-switch text-center my-5">
         <input type="checkbox" id="mode" class="form-check-input">

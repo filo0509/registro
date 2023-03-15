@@ -1,7 +1,3 @@
-// ? Ogni tanto bisogna aggiornare le impostazioni della mail dalla quale mando le mail
-// ? Failed to fetch user profile, oppure, failed to obtain access token li ottengo perchè google
-// ? non accetta i localhost
-
 /*
  *registro_docente/:classe/media/:studente/:materia -> voti di uno studente in una materia
  *registro_docente/:classe/media/:studente          -> voti di uno studente
@@ -10,13 +6,14 @@
 
 // ToDO I have to mirror the situazione_studente of the teacher for the students
 // ToDO un docente può aggiungere voti solo per la sua materia
-// ! Allora: una materia contiene più professori e poi quando si aggiungono i professori si linkano automaticamente ad una materia
-// ToDo studiare come fare una searchbar
+// ! Da implementare che una materia contiene più professori e poi quando si aggiungono i professori si linkano automaticamente ad una materia
 // ToDo uno studente può essere associato solo ad una classe
 // ! Il radar chart non si aggiorna misteriosamente
 // ! Da sistemare la creazione di nuove classi, non devono esserci doppioni e più studenti in diverse classi
 // ! Sistemare la vista mobile, soprattutto il calendario, navbar e homepage. C'è un problema col login nel registro studente
 // ! Aggiungere la nav col toggler a tutte le pagine. Aggiungere la searchbar anche su mobile
+
+// ? Se premi la rotella dello scroll e trascini puoi selezionare + righe da modificare
 
 // All the modules should imported here
 const express = require("express");
@@ -216,20 +213,6 @@ passport.use(
   )
 );
 
-// app.get(
-//   "/auth/google",
-//   passport.authenticate("google", { scope: ["profile", "email"] })
-// );
-
-// app.get(
-//   "/auth/google/callback",
-//   passport.authenticate("google", { failureRedirect: "/auth/google" }),
-//   function (req, res) {
-//     // Successful authentication, redirect home.
-//     res.redirect("/");
-//   }
-// );
-
 // Login Form
 app.get("/login", function (req, res) {
   res.render("login");
@@ -290,22 +273,6 @@ app.get("/", function (req, res) {
         studenti: "",
         classi: "",
     });
-
-    //   var students = []
-    //   var data;
-    //   User.find({ studente: true }, (err, doc) => {
-    //       for (var i = 0; i < doc.length; i++) {
-    //           console.log(doc[i].name)
-    //           students.push({
-    //               component: doc[i].name,
-    //               category: "Studente",
-    //               link: "/registro_docente/classe/medie/studente"
-    //           })
-    //       }
-    //       data = JSON.stringify(students)
-    //       console.log(data)
-    //   })
-    //   fs.writeFileSync("public/assets/json/snippets-search.json", data);
   }
 });
 
@@ -413,6 +380,8 @@ app.get("/registro_docente/:classe/medie", async function (req, res) {
             }
           );
         }
+          
+          console.log(averageGrades)
 
         // ! The page is rendered before the averageGrades are updated
         User.find({ _id: classi.students }, (err, doc) => {

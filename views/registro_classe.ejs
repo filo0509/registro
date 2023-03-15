@@ -32,6 +32,7 @@
     <link rel="stylesheet" href="/../assets/vendor/aos/dist/aos.css" />
 
     <!-- CSS Front Template -->
+    <!-- <link rel="stylesheet" href="/../assets/vendor/bootstrap/dist/css/boostrap.min.css"> -->
     <link rel="stylesheet" href="/../assets/css/theme.min.css" />
     <link rel="stylesheet" href="/../assets/css/style.css">
   </head>
@@ -117,17 +118,15 @@
       </div>
 
     <!-- ========== END HEADER ========== -->
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
     
     <!-- ========== MAIN ========== -->
     <!-- Table -->
     <!-- Table -->
-    <div class="table-reponsive-lg">
-        <table class="table table-lg table-vertical-border-striped table-hover">
+    <br>
+    <br>
+    <br>
+    <div class="table-responsive">
+        <table class="table table-nowrap table-lg table-vertical-border-striped table-hover">
             <thead>
               <tr>
                 <th scope="col">#</th>
@@ -142,7 +141,7 @@
                   <tr>
                   <th scope="row"><a class="btn" href="<%= students[i]._id %>"><%= students[i].name %></a></th>
                   <% for(var j = 0; j < subjects.length; j++) { %>
-                    <% if (averageGrades[i][j] > 6) { %>
+                    <% if (averageGrades[i][j] >= 6) { %>
                         <td> <center><a class="btn btn-success" href="<%= students[i] %>/<%= subjects[j]._id %>"><%= averageGrades[i][j] %></a></center> </td>
                     <% } if(averageGrades[i][j] < 6) { %>
                         <td><center><a class="btn btn-danger" href="<%= students[i] %>/<%= subjects[j]._id %>"><%= averageGrades[i][j] %></a></center></td>
