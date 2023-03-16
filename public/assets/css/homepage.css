@@ -1,0 +1,179 @@
+@import url("https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800;900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root,
+:root.light {
+  --bs-blue: #377dff;
+  --bs-indigo: #6610f2;
+  --bs-purple: #6f42c1;
+  --bs-pink: #d63384;
+  --bs-red: #ed4c78;
+  --bs-orange: #fd7e14;
+  --bs-yellow: #f5ca99;
+  --bs-green: #198754;
+  --bs-teal: #00c9a7;
+  --bs-cyan: #09a5be;
+  --bs-white: var(--bs-color-white);
+  --bs-gray: #8c98a4;
+  --bs-gray-dark: #71869d;
+  --bs-gray-100: #f7faff;
+  --bs-gray-200: #f8fafd;
+  --bs-gray-300: #e7eaf3;
+  --bs-gray-400: #bdc5d1;
+  --bs-gray-500: #97a4af;
+  --bs-gray-600: #8c98a4;
+  --bs-gray-700: #677788;
+  --bs-gray-800: #71869d;
+  --bs-gray-900: #1e2022;
+  --bs-primary: #377dff;
+  --bs-secondary: #71869d;
+  --bs-success: #00c9a7;
+  --bs-info: #09a5be;
+  --bs-warning: #f5ca99;
+  --bs-danger: #ed4c78;
+  --bs-light: #f7faff;
+  --bs-dark: #21325b;
+  --bs-primary-rgb: 55, 125, 255;
+  --bs-secondary-rgb: 113, 134, 157;
+  --bs-success-rgb: 0, 201, 167;
+  --bs-info-rgb: 9, 165, 190;
+  --bs-warning-rgb: 245, 202, 153;
+  --bs-danger-rgb: 237, 76, 120;
+  --bs-light-rgb: 247, 250, 255;
+  --bs-dark-rgb: 33, 50, 91;
+  --bs-white-rgb: 255, 255, 255;
+  --bs-black-rgb: 0, 0, 0;
+  --bs-body-color-rgb: 103, 119, 136;
+  --bs-body-bg-rgb: 255, 255, 255;
+  --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  --bs-gradient: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.15),
+    rgba(255, 255, 255, 0)
+  );
+  --bs-body-font-family: "Golos Text", sans-serif;
+  --bs-body-font-size: 1rem;
+  --bs-body-font-weight: 400;
+  --bs-body-line-height: 1.5;
+  --bs-body-color: #677788;
+  --bs-body-bg: #fff;
+
+  /* Customization */
+  --bs-card-bg: #eaf0ff;
+  --bs-navbar-shadow: #eaf0ff;
+  --bs-color-white: #ffffff;
+  --bs-title-color: #1a1a1a;
+  --bs-link-color: #377dff;
+  --bs-link-color-hover: #377dff;
+  --bs-button-ghost-bg: #ffffff;
+  --bs-button-soft-bg: #83aeff4d;
+  --bs-button-soft-fg: #377dff;
+  --bs-button-primary-hover: #374bff;
+  --bs-color-grade-success: rgba(9, 210, 9, 0.717);
+  --bs-color-grade-danger: rgba(255, 89, 0, 0.722);
+  --bs-color-grade-insufficent: rgba(255, 0, 0, 0.789);
+}
+*,
+::after,
+::before {
+  box-sizing: border-box;
+}
+
+:root.dark {
+  --bs-blue: #000f2b;
+  --bs-indigo: #6610f2;
+  --bs-purple: #6f42c1;
+  --bs-pink: #d63384;
+  --bs-red: #ed4c78;
+  --bs-orange: #fd7e14;
+  --bs-yellow: #f5ca99;
+  --bs-green: #198754;
+  --bs-teal: #00c9a7;
+  --bs-cyan: #09a5be;
+  --bs-white: #fff;
+  --bs-gray: #8c98a4;
+  --bs-gray-dark: #71869d;
+  --bs-gray-100: #f7faff;
+  --bs-gray-200: #f8fafd;
+  --bs-gray-300: #e7eaf3;
+  --bs-gray-400: #bdc5d1;
+  --bs-gray-500: #97a4af;
+  --bs-gray-600: #8c98a4;
+  --bs-gray-700: #677788;
+  --bs-gray-800: #71869d;
+  --bs-gray-900: #1e2022;
+  --bs-primary: #001131;
+  --bs-secondary: #71869d;
+  --bs-success: #00c9a7;
+  --bs-info: #09a5be;
+  --bs-warning: #f5ca99;
+  --bs-danger: #ed4c78;
+  --bs-light: #f7faff;
+  --bs-dark: #21325b;
+  --bs-primary-rgb: 55, 125, 255;
+  --bs-secondary-rgb: 113, 134, 157;
+  --bs-success-rgb: 0, 201, 167;
+  --bs-info-rgb: 9, 165, 190;
+  --bs-warning-rgb: 245, 202, 153;
+  --bs-danger-rgb: 237, 76, 120;
+  --bs-light-rgb: 247, 250, 255;
+  --bs-dark-rgb: 33, 50, 91;
+  --bs-white-rgb: 255, 255, 255;
+  --bs-black-rgb: 0, 0, 0;
+  --bs-body-color-rgb: 103, 119, 136;
+  --bs-body-bg-rgb: 255, 255, 255;
+  --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  --bs-gradient: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.15),
+    rgba(255, 255, 255, 0)
+  );
+  --bs-body-font-family: "Golos Text", sans-serif;
+  --bs-body-font-size: 1rem;
+  --bs-body-font-weight: 400;
+  --bs-body-line-height: 1.5;
+  --bs-body-color: #ffffff;
+  --bs-body-bg: #0d1132;
+
+  /* Customization */
+  --bs-card-bg: #21325b;
+  --bs-navbar-shadow: #4b75ff60;
+  --bs-color-white: #ffffff;
+  --bs-title-color: #ffffff;
+  --bs-title-color-rgb: 255, 255, 255;
+  --bs-link-color: #ffffff;
+  --bs-link-color-hover: #00c9a7;
+  --bs-button-ghost-bg: #ffffff;
+  --bs-button-soft-bg: #262f7c;
+  --bs-button-soft-fg: #e7e9ff;
+  --bs-button-primary-hover: #091050;
+  --bs-color-grade-success: rgba(10, 200, 127, 0.721);
+  --bs-color-grade-danger: rgba(231, 76, 24, 0.667);
+  --bs-color-grade-insufficent: rgba(255, 0, 55, 0.707);
+}
+*,
+::after,
+::before {
+  box-sizing: border-box;
+}
+
+body, html {
+  margin: 0;
+  font-family: var(--bs-body-font-family) !important;
+  font-size: var(--bs-body-font-size);
+  font-weight: var(--bs-body-font-weight);
+  line-height: var(--bs-body-line-height);
+  color: var(--bs-body-color);
+  text-align: var(--bs-body-text-align);
+  background-color: var(--bs-body-bg);
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}

@@ -131,7 +131,7 @@
               <tr>
                 <th scope="col">#</th>
                 <% for(var i = 0; i < subjects.length; i++){ %>
-                  <th scope="col"><a class="btn" href="<%= subjects[i]._id %>"><%= subjects[i].name %></a></th>
+                  <th scope="col"><a class="btn" href="medie/<%= subjects[i]._id %>"><%= subjects[i].name %></a></th>
                 <% } %>
               </tr>
             </thead>
@@ -139,12 +139,12 @@
             <tbody>
               <% for(var i = 0; i < students.length; i++){ %>
                   <tr>
-                  <th scope="row"><a class="btn" href="<%= students[i]._id %>"><%= students[i].name %></a></th>
+                  <th scope="row"><a class="btn" href="medie/<%= students[i]._id %>"><%= students[i].name %></a></th>
                   <% for(var j = 0; j < subjects.length; j++) { %>
                     <% if (averageGrades[i][j] >= 6) { %>
-                        <td> <center><a class="btn btn-success" href="<%= students[i] %>/<%= subjects[j]._id %>"><%= averageGrades[i][j] %></a></center> </td>
+                        <td> <center><a class="btn btn-success" href="medie/<%= students[i] %>/<%= subjects[j]._id %>"><%= averageGrades[i][j] %></a></center> </td>
                     <% } if(averageGrades[i][j] < 6) { %>
-                        <td><center><a class="btn btn-danger" href="<%= students[i] %>/<%= subjects[j]._id %>"><%= averageGrades[i][j] %></a></center></td>
+                        <td><center><a class="btn btn-danger" href="medie/<%= students[i] %>/<%= subjects[j]._id %>"><%= averageGrades[i][j] %></a></center></td>
                         <% } %>
                   <% } %>
                   </tr>

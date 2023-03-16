@@ -213,38 +213,42 @@ passport.use(
   )
 );
 
+app.get("/", (req, res) => {
+    res.render("index")
+})
+
 // Login Form
-app.get("/login", function (req, res) {
+app.get("/registro/login", function (req, res) {
   res.render("login");
 });
 
 // Login Logic
 // middleware
 app.post(
-  "/login",
+  "/registro/login",
   passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/login",
+    successRedirect: "/registro",
+    failureRedirect: "/registro/login",
   }),
   function (req, res) {}
 );
 
-app.get("/logout", (req, res) => {
+app.get("/registro/logout", (req, res) => {
   req.logout(req.user, (err) => {
     if (err) return next(err);
-    res.redirect("/");
+    res.redirect("/registro");
   });
 });
 
 // The root route with all the links to the other pages.
-app.get("/", function (req, res) {
+app.get("/registro", function (req, res) {
   if (req.isAuthenticated() && req.user.teacher == true) {
     Classroom.find({}, (err, classi) => {
       User.find({ studente: true }, (err, students) => {
         User.findOne(
           { _id: req.session.passport.user },
           function (err, profile) {
-            res.render("index", {
+            res.render("registro", {
               linkRegistro: "/registro_docente",
               displayName: profile.name,
               isLoggedIn: true,
@@ -257,7 +261,7 @@ app.get("/", function (req, res) {
     });
   } else if (req.isAuthenticated()) {
     User.findOne({ _id: req.session.passport.user }, function (err, profile) {
-      res.render("index", {
+      res.render("registro", {
         linkRegistro: "/registro_studente",
         displayName: profile.name,
         isLoggedIn: false,
@@ -266,7 +270,7 @@ app.get("/", function (req, res) {
       });
     });
   } else {
-    res.render("index", {
+    res.render("registro", {
       linkRegistro: "/login",
       displayName: req.user,
       isLoggedIn: false,
@@ -281,12 +285,12 @@ app.get("/registro_studente", function (req, res) {
   if (req.isAuthenticated() && req.user.studente == true) {
     res.render("registro_studente");
   } else {
-    res.redirect("/");
+    res.redirect("/registro");
   }
 });
 
 // Page for the teachers
-app.get("/registro_docente", function (req, res) {
+app.get("/registro/registro_docente", function (req, res) {
   if (req.isAuthenticated() && req.user.teacher == true) {
     Classroom.find(
       {
@@ -312,7 +316,7 @@ app.get("/registro_docente", function (req, res) {
 // Page where a teacher can see the overall situation of a single class
 // ToDo I have to cancel the average_grades from the DB because it ruins performance
 // ToDo find why the grades are inverted
-app.get("/registro_docente/:classe/medie", async function (req, res) {
+app.get("/registro/registro_docente/:classe/medie", async function (req, res) {
   if (req.isAuthenticated() && req.user.teacher == true) {
     Classroom.findOne({ _id: req.params.classe }, async (err, classi) => {
       if (err) {
@@ -401,11 +405,11 @@ app.get("/registro_docente/:classe/medie", async function (req, res) {
       }
     });
   } else {
-    res.redirect("/");
+    res.redirect("/registro");
   }
 });
 
-app.get("/aggiungi_utente", function (req, res) {
+app.get("/registro/aggiungi_utente", function (req, res) {
   if (req.isAuthenticated() && req.user.segretario === true) {
     Classroom.find({}, (err, doc) => {
       if (err) {
@@ -421,7 +425,7 @@ app.get("/aggiungi_utente", function (req, res) {
   }
 });
 
-app.get("/aggiungi_materia", function (req, res) {
+app.get("/registro/aggiungi_materia", function (req, res) {
   if (req.isAuthenticated() && req.user.segretario === true) {
     User.find({ teacher: true }, (err, doc) => {
       if (err) {
@@ -437,7 +441,7 @@ app.get("/aggiungi_materia", function (req, res) {
   }
 });
 
-app.get("/aggiungi_classe", function (req, res) {
+app.get("/registro/aggiungi_classe", function (req, res) {
   if (req.isAuthenticated() && req.user.segretario === true) {
     User.find(
       {
@@ -478,7 +482,7 @@ app.get("/aggiungi_classe", function (req, res) {
   }
 });
 
-app.post("/aggiungi_materia", function (req, res) {
+app.post("/registro/aggiungi_materia", function (req, res) {
   const name = req.body.name;
   const teachers = req.body.teacher;
 
@@ -494,11 +498,11 @@ app.post("/aggiungi_materia", function (req, res) {
     }
   );
 
-  res.redirect("/");
+  res.redirect("/registro");
 });
 
 // Manca da aggiungere la classe
-app.post("/aggiungi_utente", function (req, res) {
+app.post("/registro/aggiungi_utente", function (req, res) {
   const username = req.body.username;
   const name = req.body.name;
   const password = req.body.password;
@@ -520,7 +524,7 @@ app.post("/aggiungi_utente", function (req, res) {
               return res.render("aggiungi_utente");
             }
             passport.authenticate("local")(req, res, function () {
-              res.redirect("/");
+              res.redirect("/registro");
             });
           }
         );
@@ -538,18 +542,18 @@ app.post("/aggiungi_utente", function (req, res) {
               return res.render("aggiungi_utente");
             }
             passport.authenticate("local")(req, res, function () {
-              res.redirect("/");
+              res.redirect("/registro");
             });
           }
         );
       }
     } else {
-      res.redirect("/");
+      res.redirect("/registro");
     }
   });
 });
 
-app.post("/aggiungi_classe", function (req, res) {
+app.post("/registro/aggiungi_classe", function (req, res) {
   const class_students = req.body.students;
   const class_name = req.body.name;
   const class_subjects = req.body.subjects;
@@ -584,12 +588,12 @@ app.post("/aggiungi_classe", function (req, res) {
     }
   });
 
-  res.redirect("/");
+  res.redirect("/registro");
 });
 
 // per la search bar devo aggiungere un field classe per ogni studente
 // the situation for a single student
-app.get("/registro_docente/:classe/medie/:studente", async function (req, res) {
+app.get("/registro/registro_docente/:classe/medie/:studente", async function (req, res) {
   User.findById(req.params.studente, (err, doc) => {
     // order the doc.grades based on the date in chronological order
     doc.grades.sort((a, b) => (a.date > b.date ? 1 : -1));
@@ -610,7 +614,7 @@ app.get("/registro_docente/:classe/medie/:studente", async function (req, res) {
   });
 });
 
-app.post("/registro_docente/:classe/medie", async function (req, res) {
+app.post("/registro/registro_docente/:classe/medie", async function (req, res) {
   if (req.isAuthenticated() && req.user.teacher == true) {
     const materia = req.body.selectmateria;
     const studente = req.body.selectstudente;
@@ -657,12 +661,12 @@ app.post("/registro_docente/:classe/medie", async function (req, res) {
       }
     );
 
-    res.redirect(`/registro_docente/${classe}/medie`);
+    res.redirect(`/registro/registro_docente/${classe}/medie`);
   }
 });
 
 // the list of the "lectures" for the students
-app.get("/lezioni", function (req, res) {
+app.get("/registro/lezioni", function (req, res) {
   if (req.isAuthenticated() && req.user.studente == true) {
     Classroom.findOne(
       { students: req.session.passport.user },
@@ -682,12 +686,12 @@ app.get("/lezioni", function (req, res) {
       }
     );
   } else {
-    res.redirect("/");
+    res.redirect("/registro");
   }
 });
 
 // the same thing as /lezioni but for the teacher
-app.get("/registro_docente/:classe/lezioni", function (req, res) {
+app.get("/registro/registro_docente/:classe/lezioni", function (req, res) {
   if (req.isAuthenticated() && req.user.teacher == true) {
     Classroom.findOne({ id: req.params.classe }, (err, classe) => {
       if (err) {
@@ -707,7 +711,7 @@ app.get("/registro_docente/:classe/lezioni", function (req, res) {
 });
 
 // this is the posto request fot the lessons, a teacher can add a lesson
-app.post("/registro_docente/:classe/lezioni", async function (req, res) {
+app.post("/registro/registro_docente/:classe/lezioni", async function (req, res) {
   if (req.isAuthenticated() && req.user.teacher == true) {
     const materia = req.body.selectmateria;
     const classe = req.params.classe;
@@ -736,12 +740,12 @@ app.post("/registro_docente/:classe/lezioni", async function (req, res) {
       }
     );
 
-    res.redirect("/");
+    res.redirect("/registro");
   }
 });
 
 // The dashboard where a student can see his situation
-app.get("/dashboard_studente", function (req, res) {
+app.get("/registro/dashboard_studente", function (req, res) {
   if (req.isAuthenticated()) {
     User.findById(req.user.id, (err, doc) => {
       doc.grades.sort((a, b) => (a.date > b.date ? 1 : -1));
@@ -762,7 +766,7 @@ app.get("/dashboard_studente", function (req, res) {
 });
 
 // the grades of a students
-app.get("/voti_studente", function (req, res) {
+app.get("/registro/voti_studente", function (req, res) {
   console.log(req.session.passport.user);
   if (req.isAuthenticated()) {
     User.findOne({ _id: req.session.passport.user }, function (err, doc) {
@@ -782,12 +786,12 @@ app.get("/voti_studente", function (req, res) {
       }
     });
   } else {
-    res.redirect("/");
+    res.redirect("/registro");
   }
 });
 
 // ToDo !!!!
-app.get("/calendario", function (req, res) {
+app.get("/registro/calendario", function (req, res) {
   if (req.isAuthenticated() && req.user.studente == true) {
     User.findOne({ _id: req.session.passport.user }, function (err, studente) {
       if (err) {
@@ -816,7 +820,7 @@ app.get("/calendario", function (req, res) {
 });
 
 // ToDO !!!!
-app.get("/registro_segretarie", function (req, res) {
+app.get("/registro/registro_segretarie", function (req, res) {
   if (req.isAuthenticated() && req.user.segretario == true) {
     Classroom.find({}, (err, doc) => {
       if (err) {

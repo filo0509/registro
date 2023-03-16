@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en" dir="" data-bs-theme="dark">
+  <head>
+    <!-- Required Meta Tags Always Come First -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Title -->
+    <title>Registro</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="./favicon.ico" />
+
+    <!-- Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- CSS Implementing Plugins -->
+    <link
+      rel="stylesheet"
+      href="./assets/vendor/bootstrap-icons/font/bootstrap-icons.css"
+    />
+    <link
+      rel="stylesheet"
+      href="./assets/vendor/hs-mega-menu/dist/hs-mega-menu.min.css"
+    />
+    <link rel="stylesheet" href="./assets/vendor/aos/dist/aos.css" />
+
+    <!-- CSS Front Template -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/instantsearch.css@8.0.0/themes/satellite-min.css"
+      integrity="sha256-p/rGN4RGy6EDumyxF9t7LKxWGg6/MZfGhJM/asKkqvA="
+      crossorigin="anonymous"
+    />
+
+    <link rel="stylesheet" href="./assets/css/theme.min.css" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/css/docs.min.css" />
+  </head>
+
+  <body>
+    <%- include('partials/_spinner.ejs') %>
+
+    <!-- ========== HEADER ========== -->
+    <header
+      id="header"
+      class="navbar navbar-expand-lg navbar-end navbar-absolute-top navbar-light navbar-show-hide"
+      data-hs-header-options='{
+            "fixMoment": 1000,
+            "fixEffect": "slide"
+          }'
+      data-aos="zoom-in-left"
+    >
+      <div class="container">
+        <nav class="js-mega-menu navbar-nav-wrap">
+          <!-- Default Logo -->
+          <a class="navbar-brand" href="/" aria-label="Front">
+            <img
+              class="navbar-brand-logo"
+              src="./assets/svg/logos/logo.svg"
+              alt="Logo"
+            />
+          </a>
+          <!-- End Default Logo -->
+
+          <!-- Toggler -->
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-default">
+              <i class="bi-list"></i>
+            </span>
+            <span class="navbar-toggler-toggled">
+              <i class="bi-x"></i>
+            </span>
+          </button>
+          <!-- End Toggler -->
+
+          <!-- Collapse -->
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <div class="navbar-absolute-top-scroller">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <div
+                    class="d-flex justify-content-between align-items-center px-lg-5 px-xl-10"
+                  >
+                    <!-- Search Form -->
+                    <form
+                      id="docsSearch"
+                      class="position-relative"
+                      data-hs-list-options='{
+                                "searchMenu": true,
+                                "keyboard": true,
+                                "item": "searchTemplate",
+                                "valueNames": ["component", "category", {"name": "link", "attr": "href"}],
+                                "empty": "#searchNoResults"
+                              }'
+                    >
+                      <!-- Input Group -->
+                      <div
+                        class="input-group input-group-merge navbar-input-group"
+                      >
+                        <div class="input-group-prepend input-group-text">
+                          <i class="bi-search"></i>
+                        </div>
+
+                        <input
+                          type="search"
+                          id="docsSearch-input"
+                          class="search form-control form-control-sm"
+                          placeholder="Search in docs"
+                          aria-label="Search in docs"
+                        />
+
+                        <a
+                          class="input-group-append input-group-text"
+                          href="javascript:;"
+                        >
+                          <i
+                            id="clearSearchResultsIcon"
+                            class="bi-x"
+                            style="display: none"
+                          ></i>
+                        </a>
+                      </div>
+                      <!-- End Input Group -->
+
+                      <!-- List -->
+                      <div
+                        id="searchResults"
+                        class="list dropdown-menu navbar-dropdown-menu-borderless w-100 overflow-auto"
+                        style="max-height: 16rem"
+                      ></div>
+                      <!-- End List -->
+
+                      <!-- Empty -->
+                      <div id="searchNoResults" style="display: none">
+                        <div class="text-center p-4">
+                          <img
+                            class="mb-3"
+                            src="../assets/svg/illustrations/oc-error.svg"
+                            alt="Image Description"
+                            style="width: 10rem"
+                          />
+                          <p class="mb-0">No Results</p>
+                        </div>
+                      </div>
+                      <!-- End Empty -->
+                    </form>
+                    <!-- End Search Form -->
+
+                    <!-- List Item Template -->
+                    <div class="d-none">
+                      <div id="searchTemplate" class="dropdown-item">
+                        <a class="d-block link" href="#">
+                          <span
+                            class="category d-block fw-normal text-muted mb-1"
+                          ></span>
+                          <span class="component text-dark"></span>
+                        </a>
+                      </div>
+                    </div>
+                    <!-- End List Item Template -->
+                  </div>
+                </li>
+                <!-- Button -->
+                <li class="nav-item">
+                  <a class="btn btn-primary btn-transition" href="/registro/logout"
+                    >Logout</a
+                  >
+                </li>
+                <!-- End Button -->
+
+                <!-- Button -->
+                <li class="nav-item">
+                  <a class="btn btn-soft-primary btn-transition" href="/registro/login"
+                    >Login</a
+                  >
+                </li>
+                <!-- End Button -->
+              </ul>
+            </div>
+          </div>
+          <!-- End Collapse -->
+        </nav>
+      </div>
+    </header>
+    <!-- ========== END HEADER ========== -->
+
+    <div id="dark-mode-container" class="form-switch text-center my-5">
+      <input type="checkbox" id="mode" class="form-check-input" />
+    </div>
+
+    <!-- ========== MAIN CONTENT ========== -->
+    <main id="content" role="main">
+      <div id="hits"></div>
+      <div id="pagination"></div>
+      <!-- Hero -->
+      <div class="container overflow-hidden content-space-t-4">
+        <div class="w-md-80 w-lg-50 text-center mx-md-auto mb-5 mb-md-9">
+          <h1 data-aos="zoom-in-left" class="display-4 mb-3">
+            Registro elettronico
+          </h1>
+          <p data-aos="zoom-in-right" class="lead">
+            Istituto Don Carlo Gnocchi
+          </p>
+        </div>
+        <%- include('partials/_nav_index.ejs'); %>
+      </div>
+      <!-- End Hero -->
+    </main>
+    <!-- ========== END MAIN CONTENT ========== -->
+
+    <!-- ========== FOOTER ========== -->
+    <%- include('partials/_footer.ejs') %>
+    <!-- ========== END FOOTER ========== -->
+
+    <!-- JS Global Compulsory  -->
+    <script src="./assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- JS Implementing Plugins -->
+    <script src="./assets/vendor/hs-header/dist/hs-header.min.js"></script>
+    <script src="./assets/vendor/hs-mega-menu/dist/hs-mega-menu.min.js"></script>
+    <script src="./assets/vendor/hs-show-animation/dist/hs-show-animation.min.js"></script>
+    <script src="./assets/vendor/hs-go-to/dist/hs-go-to.min.js"></script>
+    <script src="./assets/vendor/aos/dist/aos.js"></script>
+    <script src="./assets/vendor/prism/prism.js"></script>
+    <script src="../assets/vendor/list.js/dist/list.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.10.5/dist/algoliasearch-lite.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.51.1"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- JS Front -->
+    <script src="./assets/js/theme.min.js"></script>
+    <script src="./assets/js/algolia.js"></script>
+    <script src="./assets/js/main.js"></script>
+
+    <!-- JS Plugins Init. -->
+    <script>
+      (function () {
+        // INITIALIZATION OF HEADER
+        // =======================================================
+        new HSHeader("#header").init();
+
+        // INITIALIZATION OF MEGA MENU
+        // =======================================================
+        new HSMegaMenu(".js-mega-menu", {
+          desktop: {
+            position: "left",
+          },
+        });
+
+        // INITIALIZATION OF SHOW ANIMATIONS
+        // =======================================================
+        new HSShowAnimation(".js-animation-link");
+        // INITIALIZATION OF BOOTSTRAP VALIDATION
+        // =======================================================
+        HSBsValidation.init(".js-validate", {
+          onSubmit: (data) => {
+            data.event.preventDefault();
+            alert("Submited");
+          },
+        });
+
+        // INITIALIZATION OF BOOTSTRAP DROPDOWN
+        // =======================================================
+        HSBsDropdown.init();
+
+        // INITIALIZATION OF GO TO
+        // =======================================================
+        new HSGoTo(".js-go-to");
+
+        // INITIALIZATION OF AOS
+        // =======================================================
+        AOS.init({
+          duration: 650,
+          once: true,
+        });
+        // INITIALIZATION OF LISTJS COMPONENT
+        // =======================================================
+        HSCore.components.HSList.init("#docsSearch");
+        const snippetsSearch = HSCore.components.HSList.getItem("docsSearch");
+
+        // GET JSON FILE RESULTS
+        // =======================================================
+
+        // Add students to searchbar
+        var studente = {};
+        var students = [];
+        ("<% for( let i = 0; i < studenti.length; i++ ) { %>");
+        studente = {
+          component: "<%= studenti[i].name %>",
+          category: "<%= studenti[i].username %>",
+          link:
+            "/registro_docente/" +
+            "<%= studenti[i].classe %>" +
+            "/medie/" +
+            "<%= studenti[i]._id %>",
+        };
+        students.push(studente);
+        ("<% } %>");
+        console.log(students);
+        snippetsSearch.add(students);
+
+        // Add classes
+        var classe = {};
+        var classrooms = [];
+        ("<% for( let i = 0; i < classi.length; i++ ) { %>");
+        classe = {
+          component: "<%= classi[i].name %>",
+          category: "Classe",
+          link: "/registro_docente/" + "<%= classi[i]._id %>" + "/medie",
+        };
+        classrooms.push(classe);
+        ("<% } %>");
+        snippetsSearch.add(classrooms);
+
+        // INITIALIZATION OF GO TO
+        // =======================================================
+        new HSGoTo(".js-go-to");
+      })();
+    </script>
+    <script>
+      // You can also pass an optional settings object
+      // below listed default settings
+      AOS.init({
+        // Global settings:
+        disable: false, // accepts following values: 'phone', 'tablet', 'mobile', boolean, expression or function
+        startEvent: "DOMContentLoaded", // name of the event dispatched on the document, that AOS should initialize on
+        initClassName: "aos-init", // class applied after initialization
+        animatedClassName: "aos-animate", // class applied on animation
+        useClassNames: false, // if true, will add content of `data-aos` as classes on scroll
+        disableMutationObserver: false, // disables automatic mutations' detections (advanced)
+        debounceDelay: 50, // the delay on debounce used while resizing window (advanced)
+        throttleDelay: 99, // the delay on throttle used while scrolling the page (advanced)
+
+        // Settings that can be overridden on per-element basis, by `data-aos-*` attributes:
+        offset: 120, // offset (in px) from the original trigger point
+        delay: 0, // values from 0 to 3000, with step 50ms
+        duration: 700, // values from 0 to 3000, with step 50ms
+        easing: "ease", // default easing for AOS animations
+        once: false, // whether animation should happen only once - while scrolling down
+        mirror: false, // whether elements should animate out while scrolling past them
+        anchorPlacement: "top-bottom", // defines which position of the element regarding to window should trigger the animation
+      });
+    </script>
+  </body>
+</html>
