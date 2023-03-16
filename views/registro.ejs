@@ -305,7 +305,7 @@
           component: "<%= studenti[i].name %>",
           category: "<%= studenti[i].username %>",
           link:
-            "/registro_docente/" +
+            "/registro/registro_docente/" +
             "<%= studenti[i].classe %>" +
             "/medie/" +
             "<%= studenti[i]._id %>",
@@ -322,7 +322,7 @@
         classe = {
           component: "<%= classi[i].name %>",
           category: "Classe",
-          link: "/registro_docente/" + "<%= classi[i]._id %>" + "/medie",
+          link: "/registro/registro_docente/" + "<%= classi[i]._id %>" + "/medie",
         };
         classrooms.push(classe);
         ("<% } %>");
