@@ -32,130 +32,134 @@
     <link rel="stylesheet" href="/../assets/vendor/aos/dist/aos.css" />
 
     <!-- CSS Front Template -->
+    <!-- <link rel="stylesheet" href="/../assets/vendor/bootstrap/dist/css/boostrap.min.css"> -->
     <link rel="stylesheet" href="/../assets/css/theme.min.css" />
-    <link
-      rel="stylesheet"
-      href="/../assets/vendor/chart.js/dist/Chart.min.css"
-    />
-    <link rel="stylesheet" href="/../assets/css/style.css">
+    <link rel="stylesheet" href="/../assets/css/style.css" />
   </head>
 
   <body>
-    <%- include('partials/_spinner.ejs') %>
+    <%- include('partials/_spinner.ejs') %> <%-
+    include("partials/_aggiungi_voto.ejs") %> <%-
+    include("partials/_aggiungi_lezione.ejs") %>
+
     <!-- ========== HEADER ========== -->
-    <%- include('partials/_navbar.ejs') %>
+    <header
+      id="header"
+      class="navbar navbar-expand-lg navbar-floating navbar-end navbar-light"
+      data-hs-header-options='{
+            "fixMoment": 1000,
+            "fixEffect": "slide"
+          }'
+    >
+      <div class="container">
+        <nav class="js-mega-menu navbar-nav-wrap">
+          <!-- Default Logo -->
+          <a class="navbar-brand" href="/" aria-label="Front">
+            <img
+              class="navbar-brand-logo"
+              src="/../assets/svg/logos/logo.svg"
+              alt="Logo"
+            />
+          </a>
+          <!-- End Default Logo -->
 
-    <div id="dark-mode-container" class="form-switch text-center my-5">
-        <input type="checkbox" id="mode" class="form-check-input">
-      </div>
+          <!-- Toggler -->
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-default">
+              <i class="bi-list"></i>
+            </span>
+            <span class="navbar-toggler-toggled">
+              <i class="bi-x"></i>
+            </span>
+          </button>
+          <!-- End Toggler -->
 
-    <!-- ========== END HEADER ========== -->
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-
-    <!-- ========== MAIN ========== -->
-    <!-- Description -->
-    <div class="container content-space-1">
-      <div class="row">
-        <div class="col-md-4 col-lg-3 mb-3 mb-md-0">
-          <!-- Navbar -->
-          <div class="navbar-expand-md">
-            <!-- Navbar Toggle -->
-            <div class="d-grid">
-              <button
-                type="button"
-                class="navbar-toggler btn btn-white mb-3"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarVerticalNavMenuEg2"
-                aria-label="Toggle navigation"
-                aria-expanded="false"
-                aria-controls="navbarVerticalNavMenuEg2"
-              >
-                <span class="d-flex justify-content-between align-items-center">
-                  <span class="text-dark mb-0">Menu</span>
-
-                  <span class="navbar-toggler-default">
-                    <i class="bi-list"></i>
-                  </span>
-
-                  <span class="navbar-toggler-toggled">
-                    <i class="bi-x"></i>
-                  </span>
-                </span>
-              </button>
-            </div>
-            <!-- End Navbar Toggle -->
-
-            <!-- Navbar Collapse -->
-            <div id="navbarVerticalNavMenuEg2" class="collapse navbar-collapse">
-              <ul
-                id="navbarSettingsEg2"
-                class="js-sticky-block js-scrollspy nav nav-tabs nav-link-gray nav-vertical"
-                data-hs-sticky-block-options='{
-                 "parentSelector": "#navbarVerticalNavMenuEg2",
-                 "targetSelector": "#header",
-                 "breakpoint": "md",
-                 "startPoint": "#navbarVerticalNavMenuEg2",
-                 "endPoint": "#stickyBlockEndPointEg2",
-                 "stickyOffsetTop": 20
-               }'
-              >
-                <% for( let i = 0; i < classe.subjects.length; i++ ) { %>
+          <!-- Collapse -->
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <div class="navbar-absolute-top-scroller">
+              <ul class="navbar-nav">
+                <!-- Button -->
                 <li class="nav-item">
-                  <a class="nav-link active" href="#<%= classe.subjects[i].name %>"
-                    ><%= i + 1 %>. <%= classe.subjects[i].name %></a
+                  <a
+                    class="btn btn-primary btn-transition"
+                    href="#"
+                    data-bs-toggle="modal"
+                    data-bs-target="#aggiungiVotoForm"
                   >
+                    Aggiungi Voto
+                  </a>
                 </li>
-                <% } %>
+                <li class="nav-item">
+                  <a
+                    class="btn btn-primary btn-transition"
+                    href="#"
+                    data-bs-toggle="modal"
+                    data-bs-target="#aggiungiLezioneForm"
+                  >
+                    Aggiungi Lezione
+                  </a>
+                </li>
+                <!-- End Button -->
               </ul>
             </div>
-            <!-- End Navbar Collapse -->
           </div>
-          <!-- End Navbar -->
-        </div>
-        <!-- End Col -->
-
-        <div class="col-md-8 col-lg-9">
-          <div class="mb-7">
-            <div class="text-center">
-                <h2 class="display-6 mb-0">
-                  Lezioni di <span class="text-primary text-highlight-warning"><%= classe.name %> </span>
-                </h2>
-              </div>
-          </div>
-
-          <% for( let i = 0; i < classe.subjects.length; i++ ) { %>
-          <div id="<%= classe.subjects[i].name %>" class="mb-7">
-            <button class="btn btn-soft-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample<%= i %>" aria-expanded="false" aria-controls="collapseExample">
-                <%= i + 1 %>. <%= classe.subjects[i].name %>
-              </button>
-            <% for( let j = 0; j < classe.lessons.length; j++ ) { %>
-                <% if (classe.lessons[j].subject == classe.subjects[i].name) { %>
-                    <div class="collapse" id="collapseExample<%= i %>">
-                        <div class="card" style="max-width: 20rem; margin-top: 1rem !important;">
-                            <div class="card-body">
-                              <span class="card-subtitle"><%= moment(Date.parse(classe.lessons[j].date)).format("MMMM Do") %> </span>
-                              <h3 style="text-transform: capitalize" class="card-title"><%= classe.lessons[j].subject %> </h3>
-                              <p class="card-text"><%= classe.lessons[j].description %></p>
-                            </div>
-                        </div>
-                    </div>
-                <% } %>
-            <% } %>
-          </div>
-          <% } %>
-
-          <!-- End Sticky End Point -->
-          <div id="stickyBlockEndPointEg2"></div>
-        </div>
-        <!-- End Col -->
+          <!-- End Collapse -->
+        </nav>
       </div>
-      <!-- End Row -->
+    </header>
+
+    <div id="dark-mode-container" class="form-switch text-center my-5">
+      <input type="checkbox" id="mode" class="form-check-input" />
     </div>
-    <!-- End Description -->
+
+    <!-- ========== END HEADER ========== -->
+
+    <!-- ========== MAIN ========== -->
+    <!-- Table -->
+    <!-- Table -->
+    <br />
+    <br />
+    <br />
+    <div class="table-responsive">
+      <table
+        class="table table-nowrap table-lg table-vertical-border-striped table-hover"
+      >
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <% for(var i = 0; i < subjects.length; i++){ %>
+            <th scope="col"><a class="btn"></a></th>
+            <% } %>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% for(var i = 0; i < students.length; i++){ %>
+          <tr>
+            <th scope="row"><a class="btn"></a></th>
+            <% for(var j = 0; j < subjects.length; j++) { %>
+            <td>
+              <center>
+                <a
+                  class="btn btn-success"
+                  ></a
+                >
+              </center>
+            </td>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+    <!-- End Table -->
     <!-- ========== FOOTER ========== -->
     <footer class="bg-dark">
       <div class="container pb-1 pb-lg-5">
@@ -413,11 +417,6 @@
 
     <!-- ========== END FOOTER ========== -->
 
-    <!-- ========== SECONDARY CONTENTS ========== -->
-    <!-- Aggiungi voto form -->
-
-    <%# include("partials/_aggiungi_voto.ejs") %>
-
     <!-- Go To -->
     <a
       class="js-go-to go-to position-fixed"
@@ -451,52 +450,53 @@
     <script src="/../assets/vendor/hs-show-animation/dist/hs-show-animation.min.js"></script>
     <script src="/../assets/vendor/hs-go-to/dist/hs-go-to.min.js"></script>
     <script src="/../assets/vendor/aos/dist/aos.js"></script>
-    <script src="/../assets/vendor/hs-sticky-block/dist/hs-sticky-block.min.js"></script>
-    <script src="/../assets/vendor/hs-scrollspy/dist/hs-scrollspy.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/moment@^2"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@0.1.1"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 
     <!-- JS Front -->
     <script src="/../assets/js/theme.min.js"></script>
     <script src="/../assets/js/main.js"></script>
 
-    <!-- JS Implementing Plugins -->
-
     <!-- JS Plugins Init. -->
     <script>
       (function () {
-        // INITIALIZATION OF STICKY BLOCKS
+        // INITIALIZATION OF HEADER
         // =======================================================
-        Promise.all(
-          Array.from(document.images)
-            .filter((img) => !img.complete)
-            .map(
-              (img) =>
-                new Promise((resolve) => {
-                  img.onload = img.onerror = resolve;
-                })
-            )
-        ).then(() => {
-          new HSStickyBlock(".js-sticky-block", {
-            targetSelector: document
-              .getElementById("header")
-              .classList.contains("navbar-fixed")
-              ? "#header"
-              : null,
-          });
+        new HSHeader("#header").init();
+
+        // INITIALIZATION OF MEGA MENU
+        // =======================================================
+        new HSMegaMenu(".js-mega-menu", {
+          desktop: {
+            position: "left",
+          },
         });
 
-        // INITIALIZATION OF SCROLLSPY
+        // INITIALIZATION OF SHOW ANIMATIONS
         // =======================================================
-        new bootstrap.ScrollSpy(document.body, {
-          target: "#navbarSettingsEg2",
-          offset: 10,
+        new HSShowAnimation(".js-animation-link");
+
+        // INITIALIZATION OF BOOTSTRAP VALIDATION
+        // =======================================================
+        HSBsValidation.init(".js-validate", {
+          onSubmit: (data) => {
+            data.event.preventDefault();
+            alert("Submited");
+          },
         });
 
-        new HSScrollspy("#navbarVerticalNavMenuEg2", {
-          breakpoint: "lg",
+        // INITIALIZATION OF BOOTSTRAP DROPDOWN
+        // =======================================================
+        HSBsDropdown.init();
+
+        // INITIALIZATION OF GO TO
+        // =======================================================
+        new HSGoTo(".js-go-to");
+
+        // INITIALIZATION OF AOS
+        // =======================================================
+        AOS.init({
+          duration: 650,
+          once: true,
         });
       })();
     </script>

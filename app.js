@@ -12,6 +12,8 @@
 // ! Da sistemare la creazione di nuove classi, non devono esserci doppioni e più studenti in diverse classi
 // ! Sistemare la vista mobile, soprattutto il calendario, navbar e homepage. C'è un problema col login nel registro studente
 // ! Aggiungere la nav col toggler a tutte le pagine. Aggiungere la searchbar anche su mobile
+// ! Assenze da fare (calendario delle presenze) !!!!!!!!!! Con le assenze da giustificare, le motivazioni delle assenze etc...
+// ! Vanno fatti anche i permessi (entrate ed uscite fuori orario)
 
 // ? Se premi la rotella dello scroll e trascini puoi selezionare + righe da modificare
 
@@ -113,6 +115,12 @@ const averageGradeSchema = new mongoose.Schema({
   subject: subjectSchema,
 });
 
+const absenceSchema = new mongoose.Schema({
+  dateStart: Date,
+  dateEnd: Date,
+  giustificato: Boolean,
+});
+
 // this is the schema of a single user (login with google)
 const userSchema = new mongoose.Schema({
   classe: String,
@@ -127,6 +135,7 @@ const userSchema = new mongoose.Schema({
   genitore: Boolean,
   studente: Boolean,
   averageGrades: [Number],
+  assenze: [absenceSchema],
 });
 
 // the schema for a classroom that contains N students
@@ -156,6 +165,7 @@ const Classroom = new mongoose.model("Classroom", classroomSchema);
 const Admin = new mongoose.model("Admin", AdminSchema);
 const Lesson = new mongoose.model("Lesson", lessonSchema);
 const Subject = new mongoose.model("Subject", subjectSchema);
+const Absence = new mongoose.model("Absence", absenceSchema);
 const adminJs = new AdminJS({
   resources: [User, Grade, Classroom, Subject, Lesson],
 });
@@ -214,8 +224,8 @@ passport.use(
 );
 
 app.get("/", (req, res) => {
-    res.render("index")
-})
+  res.render("index");
+});
 
 // Login Form
 app.get("/registro/login", function (req, res) {
@@ -252,8 +262,8 @@ app.get("/registro", function (req, res) {
               linkRegistro: "/registro_docente",
               displayName: profile.name,
               isLoggedIn: true,
-                studenti: students,
-                classi: classi,
+              studenti: students,
+              classi: classi,
             });
           }
         );
@@ -265,23 +275,17 @@ app.get("/registro", function (req, res) {
         linkRegistro: "/registro_studente",
         displayName: profile.name,
         isLoggedIn: false,
-          studenti: "",
-          classi: "",
+        studenti: "",
+        classi: "",
       });
     });
   } else {
-    res.render("registro", {
-      linkRegistro: "/login",
-      displayName: req.user,
-      isLoggedIn: false,
-        studenti: "",
-        classi: "",
-    });
+    res.redirect("/registro/login");
   }
 });
 
 // Page for the students
-app.get("/registro_studente", function (req, res) {
+app.get("/registro/registro_studente", function (req, res) {
   if (req.isAuthenticated() && req.user.studente == true) {
     res.render("registro_studente");
   } else {
@@ -310,6 +314,25 @@ app.get("/registro/registro_docente", function (req, res) {
     );
   } else {
     res.redirect("/login");
+  }
+});
+
+app.get("/registro/registro_docente/:classe/agenda", async function (req, res) {
+  if (req.isAuthenticated() && req.user.teacher == true) {
+    Classroom.findOne({ _id: req.params.classe }).then((err, classe) => {
+      if (err) {
+        console.log("Err: " + err);
+      } else {
+        User.find({ _id: classe.students }, (err, studenti) => {
+          res.render("docente_agenda", {
+            subjects: classe.subjects,
+            students: studenti,
+          });
+        });
+      }
+    });
+  } else {
+    res.redirect("/");
   }
 });
 
@@ -384,8 +407,6 @@ app.get("/registro/registro_docente/:classe/medie", async function (req, res) {
             }
           );
         }
-          
-          console.log(averageGrades)
 
         // ! The page is rendered before the averageGrades are updated
         User.find({ _id: classi.students }, (err, doc) => {
@@ -593,26 +614,29 @@ app.post("/registro/aggiungi_classe", function (req, res) {
 
 // per la search bar devo aggiungere un field classe per ogni studente
 // the situation for a single student
-app.get("/registro/registro_docente/:classe/medie/:studente", async function (req, res) {
-  User.findById(req.params.studente, (err, doc) => {
-    // order the doc.grades based on the date in chronological order
-    doc.grades.sort((a, b) => (a.date > b.date ? 1 : -1));
-    if (err) {
-      console.log(`Error: ` + err);
-    } else {
-      Classroom.findById(req.params.classe, (err, classe) => {
-        // ToDo un professore può aggiungere voti solo per la sua/e materia/e
-        console.log(classe);
-        res.render("situazione_studente", {
-          subjects: classe.subjects,
-          student: doc,
-          linkRegistro: "",
-          displayName: req.user.name,
+app.get(
+  "/registro/registro_docente/:classe/medie/:studente",
+  async function (req, res) {
+    User.findById(req.params.studente, (err, doc) => {
+      // order the doc.grades based on the date in chronological order
+      doc.grades.sort((a, b) => (a.date > b.date ? 1 : -1));
+      if (err) {
+        console.log(`Error: ` + err);
+      } else {
+        Classroom.findById(req.params.classe, (err, classe) => {
+          // ToDo un professore può aggiungere voti solo per la sua/e materia/e
+          console.log(classe);
+          res.render("situazione_studente", {
+            subjects: classe.subjects,
+            student: doc,
+            linkRegistro: "",
+            displayName: req.user.name,
+          });
         });
-      });
-    }
-  });
-});
+      }
+    });
+  }
+);
 
 app.post("/registro/registro_docente/:classe/medie", async function (req, res) {
   if (req.isAuthenticated() && req.user.teacher == true) {
@@ -661,7 +685,7 @@ app.post("/registro/registro_docente/:classe/medie", async function (req, res) {
       }
     );
 
-    res.redirect(`/registro/registro_docente/${classe}/medie`);
+    res.redirect(`/registro/registro_docente/${classe}/medie/`);
   }
 });
 
@@ -711,38 +735,41 @@ app.get("/registro/registro_docente/:classe/lezioni", function (req, res) {
 });
 
 // this is the posto request fot the lessons, a teacher can add a lesson
-app.post("/registro/registro_docente/:classe/lezioni", async function (req, res) {
-  if (req.isAuthenticated() && req.user.teacher == true) {
-    const materia = req.body.selectmateria;
-    const classe = req.params.classe;
-    const description = req.body.description;
-    const data = req.body.selectdata;
-    const hour = req.body.selectHour;
+app.post(
+  "/registro/registro_docente/:classe/lezioni",
+  async function (req, res) {
+    if (req.isAuthenticated() && req.user.teacher == true) {
+      const materia = req.body.selectmateria;
+      const classe = req.params.classe;
+      const description = req.body.description;
+      const data = req.body.selectdata;
+      const hour = req.body.selectHour;
 
-    Classroom.updateOne(
-      { _id: classe },
-      {
-        $push: {
-          lessons: {
-            subject: materia,
-            date: data,
-            classroom: classe,
-            description: description,
-            teacher: req.session.passport.user,
-            ora: hour,
+      Classroom.updateOne(
+        { _id: classe },
+        {
+          $push: {
+            lessons: {
+              subject: materia,
+              date: data,
+              classroom: classe,
+              description: description,
+              teacher: req.session.passport.user,
+              ora: hour,
+            },
           },
         },
-      },
-      (err, doc) => {
-        if (err) {
-          console.log(`Error: ` + err);
+        (err, doc) => {
+          if (err) {
+            console.log(`Error: ` + err);
+          }
         }
-      }
-    );
+      );
 
-    res.redirect("/registro");
+      res.redirect("/registro");
+    }
   }
-});
+);
 
 // The dashboard where a student can see his situation
 app.get("/registro/dashboard_studente", function (req, res) {
